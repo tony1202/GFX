@@ -4,6 +4,12 @@ import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.RandomBasedGenerator;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
+import com.mchange.lang.IntegerUtils;
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * @author tony
@@ -38,4 +44,26 @@ public class UUIDUtils {
     public static String uuid(){
         return timeUUID().contains("-")?timeUUID().replaceAll("-",""):timeUUID();
     }
+
+    /**
+     * 指定前缀+日期+5位后缀
+     * @param pre 前缀
+     * @return
+     */
+    public static String uuid(String pre){
+        String result = null;
+        try {
+            Random random = new Random(System.currentTimeMillis());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            Thread.sleep(5);
+            DecimalFormat df = new DecimalFormat("0000");
+            int i = random.nextInt(10000);
+            String format = df.format(i);
+            result = pre+dateFormat.format(new Date())+format;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
