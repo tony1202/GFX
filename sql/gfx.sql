@@ -1,6 +1,6 @@
 -- 字典表
 CREATE TABLE dir(
-id varchar(4) not null comment '字典id'
+id varchar(4) not null comment '字典id',
 cid varchar(4) not null COMMENT '字典分类id',
 NAME VARCHAR(20) NOT NULL COMMENT '字典名',
 create_date DATE NULL COMMENT '创建时间',
@@ -113,11 +113,11 @@ current_num INT NOT NULL COMMENT '当前库存',
 init_num int not null comment '初始库存',
 repository_id INT NOT NULL COMMENT '仓库id',
 create_date DATE NULL COMMENT '创建时间',
-update_date DATE NULL COMMENT '更新时间',
+update_date DATE NULL COMMENT '更新时间'
 )CHARSET=utf8 COMMENT '库存表';
 
 -- 入库表
-create table stockIn(
+create table stock_in(
 record_id varchar(30) primary key comment '入库记录id',
 goods_id VARCHAR(50) NOT NULL COMMENT '型号',
 goods_type varchar(4) NOT NULL COMMENT '货物类型',
@@ -129,13 +129,13 @@ repository_id int not null comment '库位id',
 operator varchar(50) not null comment '操作人',
 remark varchar(200) null comment '备注',
 create_date date not null comment '入库时间',
-update_date date not null comment '修改时间'
+update_date date not null comment '修改时间',
 CONSTRAINT fk_stockIn_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id),
-constraint fk_stockout_operator foreign key (operator) references user(user_id)
+constraint fk_stockIn_operator foreign key (operator) references user(user_id)
 )charset=utf8 comment '入库表';
 
 -- 出库表
-create table stockOut(
+create table stock_out(
 record_id varchar(30) primary key comment '出库记录id',
 goods_id varchar(50) not null comment '型号',
 goods_type varchar(4) not null comment '货物类型',
@@ -146,12 +146,12 @@ operator varchar(50) not null comment '操作人',
 remark varchar(200) null comment '备注',
 create_date date not null comment '出库时间',
 update_date date not null comment '修改时间',
-constraint fk_stockout_operator foreign key (operator) references user(user_id),
-CONSTRAINT fk_stockIn_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
-)charset=utf8 comment '出库表'
+constraint fk_stockOut_operator foreign key (operator) references user(user_id),
+CONSTRAINT fk_stockOut_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
+)charset=utf8 comment '出库表';
 
 -- 销售出库表
-create table saleOut(
+create table sale(
 record_id varchar(30) primary key comment '出库记录id',
 goods_id varchar(50) not null comment '型号',
 goods_type varchar(4) not null comment '货物类型',
@@ -164,8 +164,8 @@ customer varchar(50) not null comment '客户',
 remark varchar(200) null comment '备注',
 create_date date not null comment '出库时间',
 update_date date not null comment '修改时间',
-constraint fk_stockout_operator foreign key (operator) references user(user_id),
-CONSTRAINT fk_stockIn_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
+constraint fk_sale_operator foreign key (operator) references user(user_id),
+CONSTRAINT fk_sale_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 )charset=utf8 comment '销售出库';
 
 -- 售后入库表
@@ -187,7 +187,7 @@ CONSTRAINT fk_afterSale_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 
 
 
-insert into user values('admin','admin','123456','0',null,null)
+insert into user values('admin','admin','123456','0',null,null);
 insert into role values('commonsAdmin','通用管理员','0',null,null);
 insert into role values('systemAdmin','系统管理员','0',null,null);
 insert into role values('admin','管理员','0',null,null);
