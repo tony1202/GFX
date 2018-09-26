@@ -188,15 +188,33 @@ CONSTRAINT fk_afterSale_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 
 
 insert into user values('admin','admin','123456','0',null,null);
+insert into user values ('tony','tony','123456','0',null,null);
+
 insert into role values('commonsAdmin','通用管理员','0',null,null);
 insert into role values('systemAdmin','系统管理员','0',null,null);
 insert into role values('admin','管理员','0',null,null);
 
 insert into user_role values('admin','commonsAdmin',null,null);
+insert into user_role values('tony','commonsAdmin',null,null);
 insert into user_role values('admin','systemAdmin',null,null);
 insert into user_role values('admin','admin',null,null);
 
-insert into dir values(null,'玻璃','00',null);
-insert into dir values(null,'背光','00',null);
-insert into dir values(null,'模组','00',null);
-insert into dir values(null,'胶纸','00',null);
+insert into dir values('0001','00','玻璃',null);
+insert into dir values('0002','00','背光',null);
+insert into dir values('0003','00','模组',null);
+insert into dir values('0004','00','胶纸',null);
+
+alter table dir add cname varchar(50) not null;
+
+insert into goods values ('NV156FHM-N61','熊猫','0001','15.6',null);
+insert into goods values ('NV156FHM-N48','熊猫','0001','15.6',null);
+insert into goods values ('NV133FHM-N52','熊猫','0001','13.3',null);
+
+insert into repository values ('A1','A区1号','0',null,null);
+insert into repository values ('A2','A区2号','0',null,null);
+insert into repository values ('A3','A区3号','0',null,null);
+insert into repository values ('A4','A区4号','0',null,null);
+
+insert into customer values (null,'华为','任总','10086',null,null,'admin');
+insert into customer values (null,'中兴','刘总','10000',null,null,'admin');
+insert into customer values (null,'京东','刘总','102369',null,null,'admin');

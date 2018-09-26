@@ -31,12 +31,6 @@ spring:
       initial-size: 1
       url: jdbc:mysql://localhost:3306/gfx?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
 
-  cache:
-    ehcache:
-      config: classpath:config/ehcache.xml
-    cache-names: shiroSessionCache
-
-
 
 
 
@@ -60,4 +54,9 @@ pagehelper:
   support-methods-arguments: true
   page-size-zero: true
   params: count=countSql;pageNum=page;pageSize=pageSize
+
+logging:
+  level:
+    com.gfx.web.common.dao.mapper: debug
+
 

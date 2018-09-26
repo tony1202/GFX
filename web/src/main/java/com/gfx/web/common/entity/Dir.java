@@ -9,19 +9,19 @@ public class Dir {
      * 字典id
      */
     @Id
-    private Integer id;
+    private String id;
+
+    /**
+     * 字典分类id
+     */
+    @Id
+    private String cid;
 
     /**
      * 字典名
      */
     @Column(name = "NAME")
     private String name;
-
-    /**
-     * 字典类型:00-货物;01--仓库;02--进出仓;03--人事管理
-     */
-    @Column(name = "TYPE")
-    private String type;
 
     /**
      * 创建时间
@@ -34,7 +34,7 @@ public class Dir {
      *
      * @return id - 字典id
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -43,8 +43,26 @@ public class Dir {
      *
      * @param id 字典id
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+    /**
+     * 获取字典分类id
+     *
+     * @return cid - 字典分类id
+     */
+    public String getCid() {
+        return cid;
+    }
+
+    /**
+     * 设置字典分类id
+     *
+     * @param cid 字典分类id
+     */
+    public void setCid(String cid) {
+        this.cid = cid == null ? null : cid.trim();
     }
 
     /**
@@ -63,24 +81,6 @@ public class Dir {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    /**
-     * 获取字典类型:00-货物;01--仓库;02--进出仓;03--人事管理
-     *
-     * @return TYPE - 字典类型:00-货物;01--仓库;02--进出仓;03--人事管理
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * 设置字典类型:00-货物;01--仓库;02--进出仓;03--人事管理
-     *
-     * @param type 字典类型:00-货物;01--仓库;02--进出仓;03--人事管理
-     */
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
     }
 
     /**

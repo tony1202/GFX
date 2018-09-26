@@ -2,7 +2,7 @@ package com.gfx.web.app.baseData.service.impl;
 
 import com.gfx.web.app.baseData.service.GoodsService;
 import com.gfx.web.app.constant.CommonConstant;
-import com.gfx.web.base.dto.GoodsDto;
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.common.dao.mapper.GoodsMapper;
 import com.gfx.web.common.entity.Goods;
@@ -69,15 +69,11 @@ public class GoodsServiceImpl implements GoodsService {
                 break;
             //根据id查询
             case CommonConstant.GoodsConstant.SEARCH_TYPE_ID:
-                if (!StringUtils.isNumeric(pagination.getKeyWord())) {
-                    log.warn("id must be number -->{}", pagination.getKeyWord());
-                    return null;
-                }
-                params.put("id", pagination.getKeyWord());
+                params.put("id", pagination.getKeyWord().toUpperCase());
                 break;
-            //根据名字查询,支持模糊查询
-            case CommonConstant.GoodsConstant.SEARCH_TYPE_NAME:
-                params.put("name", pagination.getKeyWord());
+            //根据尺寸查询,支持模糊查询
+            case CommonConstant.GoodsConstant.SEARCH_TYPE_SIZE:
+                params.put("scale", pagination.getKeyWord());
                 break;
             //其他
             default:

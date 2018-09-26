@@ -25,7 +25,7 @@
         </jdbcConnection>
 
         <!--MyBatis 生成器只需要生成 Model-->
-        <javaModelGenerator targetPackage="com.gfx.vms.web.common.entity"
+        <javaModelGenerator targetPackage="com.gfx.web.common.entity"
                             targetProject="web/src/main/java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
@@ -36,13 +36,18 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.gfx.vms.web.common.dao.mapper" targetProject="web/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.gfx.web.common.dao.mapper" targetProject="web/src/main/java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
         <!--指定对应表-->
         <table schema="" tableName="goods"/>
-        <!--<table schema="" tableName="user"/>-->
+        <table schema="" tableName="dir"/>
+        <table schema="" tableName="repository"/>
+        <table schema="" tableName="stock_in"/>
+        <table schema="" tableName="stock_out"/>
+        <table schema="" tableName="storage"/>
+
         <!--<table schema="" tableName="user"/>-->
 
         <!--将所有的表都生成-->

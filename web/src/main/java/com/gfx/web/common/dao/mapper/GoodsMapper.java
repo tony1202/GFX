@@ -1,6 +1,6 @@
 package com.gfx.web.common.dao.mapper;
 
-import com.gfx.web.base.dto.GoodsDto;
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.common.entity.Goods;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

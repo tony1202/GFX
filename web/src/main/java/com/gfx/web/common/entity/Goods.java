@@ -11,15 +11,16 @@ public class Goods {
     private String id;
 
     /**
+     * 货物类型
+     */
+    @Id
+    @Column(name = "TYPE")
+    private String type;
+
+    /**
      * 品牌
      */
     private String brand;
-
-    /**
-     * 货物类型
-     */
-    @Column(name = "TYPE")
-    private Integer type;
 
     /**
      * 尺寸
@@ -51,6 +52,24 @@ public class Goods {
     }
 
     /**
+     * 获取货物类型
+     *
+     * @return TYPE - 货物类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置货物类型
+     *
+     * @param type 货物类型
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    /**
      * 获取品牌
      *
      * @return brand - 品牌
@@ -66,24 +85,6 @@ public class Goods {
      */
     public void setBrand(String brand) {
         this.brand = brand == null ? null : brand.trim();
-    }
-
-    /**
-     * 获取货物类型
-     *
-     * @return TYPE - 货物类型
-     */
-    public Integer getType() {
-        return type;
-    }
-
-    /**
-     * 设置货物类型
-     *
-     * @param type 货物类型
-     */
-    public void setType(Integer type) {
-        this.type = type;
     }
 
     /**

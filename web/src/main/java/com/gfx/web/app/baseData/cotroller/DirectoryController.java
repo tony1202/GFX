@@ -29,12 +29,12 @@ public class DirectoryController {
     }
 
     @GetMapping("/listDir")
-    public Map<String,Object> getListDir(@RequestParam String type){
+    public Map<String,Object> getListDir(@RequestParam String cid){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
-        if (StringUtils.isNoneBlank(type)){
+        if (StringUtils.isNoneBlank(cid)){
 
             try {
-                List<Dir> listDir = directoryService.getListDir(type);
+                List<Dir> listDir = directoryService.getListDir(cid);
                 vmsResponse.setResponseBodyData(listDir);
                 vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
             } catch (Exception e) {

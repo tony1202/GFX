@@ -53,8 +53,8 @@ public class CustomerServiceImpl implements CustomerService {
         switch (pagination.getSearchType()){
             case CommonConstant.CustomerConstant.SEARCH_TYPE_ALL:
                 break;
-            case CommonConstant.CustomerConstant.SEARCH_TYPE_ID:
-                params.put("id",pagination.getKeyWord());
+            case CommonConstant.CustomerConstant.SEARCH_TYPE_LINK_MAN:
+                params.put("linkMan",pagination.getKeyWord());
                 break;
             case CommonConstant.CustomerConstant.SEARCH_TYPE_NAME:
                 params.put("name",pagination.getKeyWord());
@@ -67,4 +67,17 @@ public class CustomerServiceImpl implements CustomerService {
         result.put("data",list);
         return result;
     }
+
+    /**
+     * 新客户
+     *
+     * @param customer 客户
+     * @return 新增结果
+     */
+    @Override
+    public Boolean addCustomer(Customer customer) {
+
+        return customerMapper.insert(customer)==1;
+    }
+
 }

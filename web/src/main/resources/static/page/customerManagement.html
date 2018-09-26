@@ -26,9 +26,9 @@
 			if (type == "所有") {
 				$("#search_input").attr("readOnly", "true");
 				search_type_customer = "searchAll";
-			} else if (type == "客户ID") {
+			} else if (type == "客户联系人") {
 				$("#search_input").removeAttr("readOnly");
-				search_type_customer = "searchByID";
+				search_type_customer = "searchByLinkMan";
 			} else if (type == "客户名称") {
 				$("#search_input").removeAttr("readOnly");
 				search_type_customer = "searchByName";
@@ -98,9 +98,10 @@
 										title : '操作',
 										formatter : function(value, row, index) {
 											var s = '<button class="btn btn-info btn-sm edit"><span>编辑</span></button>';
-											var d = '<button class="btn btn-danger btn-sm delete"><span>删除</span></button>';
+											//var d = '<button class="btn btn-danger btn-sm delete"><span>删除</span></button>';
 											var fun = '';
-											return s + ' ' + d;
+											//return s + ' ' + d;
+											return s;
 										},
 										events : {
 											// 操作列中编辑按钮的动作
@@ -147,8 +148,8 @@
 		// load info
 		$('#customer_form_edit').bootstrapValidator("resetForm", true);
 		$('#customer_name_edit').val(row.name);
-		$('#customer_person_edit').val(row.personInCharge);
-		$('#customer_tel_edit').val(row.tel);
+		$('#customer_person_edit').val(row.linkMan);
+		$('#customer_tel_edit').val(row.phone);
 		$('#customer_email_edit').val(row.email);
 		$('#customer_address_edit').val(row.address);
 	}
@@ -175,20 +176,24 @@
 					validators : {
 						notEmpty : {
 							message : '客户电话不能为空'
-						}
-					}
-				},
-				customer_email : {
-					validators : {
-						notEmpty : {
-							message : '客户E-mail不能为空'
 						},
-						regexp : {
-							regexp : '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-							message : 'E-mail的格式不正确'
-						}
+                        regexp :{
+                            regexp :'^[1][3,4,5,7,8][0-9]{9}$',
+                            message : '手机号码格式不对'
+                        }
 					}
 				},
+				// customer_email : {
+				// 	validators : {
+				// 		notEmpty : {
+				// 			message : '客户E-mail不能为空'
+				// 		},
+				// 		regexp : {
+				// 			regexp : '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+				// 			message : 'E-mail的格式不正确'
+				// 		}
+				// 	}
+				// },
 				customer_address : {
 					validators : {
 						notEmpty : {
@@ -221,8 +226,8 @@
 					var data = {
 						id : selectID,
 						name : $('#customer_name_edit').val(),
-						personInCharge : $('#customer_person_edit').val(),
-						tel : $('#customer_tel_edit').val(),
+						linkMan : $('#customer_person_edit').val(),
+						phone : $('#customer_tel_edit').val(),
 						email : $('#customer_email_edit').val(),
 						address : $('#customer_address_edit').val()
 					}
@@ -306,8 +311,8 @@
 		$('#add_modal_submit').click(function() {
 			var data = {
 				name : $('#customer_name').val(),
-				personInCharge : $('#customer_person').val(),
-				tel : $('#customer_tel').val(),
+				linkMan : $('#customer_person').val(),
+				phone : $('#customer_tel').val(),
 				email : $('#customer_email').val(),
 				address : $('#customer_address').val()
 			}

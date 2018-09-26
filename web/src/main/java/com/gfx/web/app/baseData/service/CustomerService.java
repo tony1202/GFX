@@ -1,6 +1,7 @@
 package com.gfx.web.app.baseData.service;
 
 import com.gfx.web.base.dto.Pagination;
+import com.gfx.web.common.entity.Customer;
 
 import java.util.Map;
 
@@ -17,4 +18,11 @@ public interface CustomerService {
      * @return 分页数据 key:total - 总条数;key:data - 数据列
      */
     Map<String,Object> getCustomerList(Pagination pagination, String userId, String isAdmin);
+
+    /**
+     * 新客户
+     * @param customer 客户
+     * @return 新增结果
+     */
+    Boolean addCustomer(Customer customer);
 }

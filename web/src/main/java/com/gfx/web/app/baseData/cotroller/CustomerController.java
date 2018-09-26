@@ -2,6 +2,7 @@ package com.gfx.web.app.baseData.cotroller;
 
 import com.gfx.web.app.baseData.service.CustomerService;
 import com.gfx.web.app.constant.CommonConstant;
+import com.gfx.web.base.constant.VMSConstant;
 import com.gfx.web.base.context.UserContextHolder;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.base.dto.UserInfoDto;
@@ -13,10 +14,9 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -38,33 +38,57 @@ public class CustomerController {
 
     /**
      * 获取客户列表
+     *
      * @param pagination 分页数据
      * @return 客户列表
      */
     @GetMapping("/getCustomerList")
     @RequiresAuthentication
-    public Map<String,Object> getCustomerList(Pagination pagination){
+    public Map<String, Object> getCustomerList(Pagination pagination, HttpSession session) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         String isAdmin = "N";
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
         try {
             UserInfoDto userInfo = UserContextHolder.getUserInfo();
+            // UserInfoDto userInfo = (UserInfoDto) session.getAttribute(VMSConstant.SessionConstant.USER_INFO);
             String userId = userInfo.getUserId();
             List<String> roles = userInfo.getRoles();
-            if (roles.contains(CommonConstant.RoleConstant.ADMIN)){
+            if (roles.contains(CommonConstant.RoleConstant.ADMIN)) {
                 isAdmin = "Y";
             }
-            Map<String,Object> customers = customerService.getCustomerList(pagination,userId,isAdmin);
-            if (MapUtils.isNotEmpty(customers)){
+            Map<String, Object> customers = customerService.getCustomerList(pagination, userId, isAdmin);
+            if (MapUtils.isNotEmpty(customers)) {
                 List<Customer> rows = (List<Customer>) customers.get("data");
-                vmsResponse.setCustomerInfo("rows",rows);
+                vmsResponse.setCustomerInfo("rows", rows);
                 vmsResponse.setResponseBodyTotal((Long) customers.get("total"));
                 vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
             }
         } catch (Exception e) {
-            log.warn("customer list is error ->{}",e);
+            log.warn("customer list is error ->{}", e);
         }
 
+        return vmsResponse.generateResponseBody();
+    }
+
+    /**
+     * 新增客户
+     *
+     * @param customer 客户
+     * @return 响应
+     */
+    @PostMapping("/addCustomer")
+    public Map<String, Object> addCustomer(@RequestBody Customer customer) {
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        try {
+            customer.setSaleMan(UserContextHolder.getUserInfo().getUserId());
+            if (customerService.addCustomer(customer)) ;
+            {
+                vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+            }
+        } catch (Exception e) {
+            log.warn("add customer err -->{}",e);
+        }
         return vmsResponse.generateResponseBody();
     }
 

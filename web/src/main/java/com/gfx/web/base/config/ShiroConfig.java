@@ -122,13 +122,15 @@ public class ShiroConfig {
      */
     @Bean(name = "cacheManager")
     public EhCacheManager cacheManager(){
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setCacheManagerName("ShiroSessionCache");
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("classpath:config/ehcache.xml"));
-        net.sf.ehcache.CacheManager object = ehCacheManagerFactoryBean.getObject();
+        // EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
+        // ehCacheManagerFactoryBean.setCacheManagerName("ShiroSessionCache");
+        // ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("classpath:config/ehcache.xml"));
+        // net.sf.ehcache.CacheManager object = ehCacheManagerFactoryBean.getObject();
+        // EhCacheManager cacheManager = new EhCacheManager();
+        // cacheManager.setCacheManager(object);
+        // cacheManager.setCacheManagerConfigFile("classpath:config/ehcache.xml");
         EhCacheManager cacheManager = new EhCacheManager();
-        cacheManager.setCacheManager(object);
-        //cacheManager.setCacheManagerConfigFile("classpath:config/ehcache.xml");
+        cacheManager.setCacheManagerConfigFile("classpath:config/ehcache.xml");
         return cacheManager;
     }
 

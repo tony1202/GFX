@@ -24,12 +24,12 @@ public class DirectoryServiceImpl implements DirectoryService {
     /**
      * 根据字典类型获取字典数据集合
      *
-     * @param type 字典集合
+     * @param cid 字典集合
      * @return
      */
     @Override
-    public List<Dir> getListDir(String type) {
+    public List<Dir> getListDir(String cid) {
 
-        return dirMapper.getListDirByType(type);
+        return dirMapper.getListDirByType(cid);
     }
 }

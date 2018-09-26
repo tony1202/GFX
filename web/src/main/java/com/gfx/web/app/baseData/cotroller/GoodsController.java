@@ -1,10 +1,12 @@
 package com.gfx.web.app.baseData.cotroller;
 
 import com.gfx.web.app.baseData.service.GoodsService;
-import com.gfx.web.base.dto.GoodsDto;
+import com.gfx.web.app.constant.CommonConstant;
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
+import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.Goods;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -54,10 +56,17 @@ public class GoodsController {
         return vmsResponse.generateResponseBody();
     }
 
-
+    /**
+     * 新增
+     * @param goods 货物
+     * @return 响应
+     */
     @PostMapping("/addGoods")
     public Map<String, Object> addGoods(@RequestBody Goods goods){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        if (StringUtils.equalsIgnoreCase(goods.getType(), CommonConstant.GoodsConstant.GOOD_TYPE_TAPE)){
+            goods.setId(UUIDUtils.uuid("G"));
+        }
         try {
             String res = goodsService.addGoods(goods);
             if (StringUtils.equalsIgnoreCase("ok",res)){

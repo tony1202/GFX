@@ -5,10 +5,10 @@ import javax.persistence.*;
 @Table(name = "repository")
 public class Repository {
     /**
-     * 仓库id
+     * 仓库代码id
      */
     @Id
-    private Integer id;
+    private String id;
 
     /**
      * 仓库地址
@@ -33,21 +33,21 @@ public class Repository {
     private Float area;
 
     /**
-     * 获取仓库id
+     * 获取仓库代码id
      *
-     * @return id - 仓库id
+     * @return id - 仓库代码id
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
-     * 设置仓库id
+     * 设置仓库代码id
      *
-     * @param id 仓库id
+     * @param id 仓库代码id
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
     }
 
     /**

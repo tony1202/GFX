@@ -1,4 +1,4 @@
-package com.gfx.web.base.dto;
+package com.gfx.web.app.baseData.dto;
 
 import com.gfx.web.common.entity.Goods;
 
