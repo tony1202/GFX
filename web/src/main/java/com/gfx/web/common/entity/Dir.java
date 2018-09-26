@@ -29,6 +29,8 @@ public class Dir {
     @Column(name = "create_date")
     private Date createDate;
 
+    private String cname;
+
     /**
      * 获取字典id
      *
@@ -99,5 +101,19 @@ public class Dir {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * @return cname
+     */
+    public String getCname() {
+        return cname;
+    }
+
+    /**
+     * @param cname
+     */
+    public void setCname(String cname) {
+        this.cname = cname == null ? null : cname.trim();
     }
 }
