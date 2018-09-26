@@ -13,6 +13,6 @@
     <result column="update_date" jdbcType="DATE" property="updateDate" />
   </resultMap>
     <select id="getUserById" resultType="com.gfx.web.common.entity.User">
-      select user_id,user_name,pass_word from user where user_status='0'
+      select user_id,user_name,pass_word from user where user_id=#{userId} and user_status='0'
     </select>
 </mapper>

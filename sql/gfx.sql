@@ -3,6 +3,7 @@ CREATE TABLE dir(
 id varchar(4) not null comment '字典id',
 cid varchar(4) not null COMMENT '字典分类id',
 NAME VARCHAR(20) NOT NULL COMMENT '字典名',
+cname varchar(50) null comment '分类名称',
 create_date DATE NULL COMMENT '创建时间',
 constraint pk_dir_id primary key (id,cid)
 )CHARSET=utf8 COMMENT '字典表';

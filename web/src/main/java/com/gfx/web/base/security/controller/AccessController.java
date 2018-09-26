@@ -1,6 +1,7 @@
 package com.gfx.web.base.security.controller;
 
 import com.gfx.web.base.constant.VMSConstant;
+import com.gfx.web.base.context.UserContextHolder;
 import com.gfx.web.base.dto.UserInfoDto;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
@@ -101,6 +102,27 @@ public class AccessController {
         return vmsResponse.generateResponseBody();
     }
 
+
+    /**
+     * 登出
+     * @return 相应
+     */
+    @GetMapping("/logout")
+    public Map<String,Object> logout(){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        try {
+            //清空用户信息
+            //UserContextHolder.cleanUserInfo();
+            //获取当前用户
+            Subject subject = SecurityUtils.getSubject();
+            subject.logout();
+            vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+        } catch (Exception e) {
+            log.warn("logout is error -->{}",e);
+        }
+        return vmsResponse.generateResponseBody();
+    }
 
     /**
      * 获取图形码

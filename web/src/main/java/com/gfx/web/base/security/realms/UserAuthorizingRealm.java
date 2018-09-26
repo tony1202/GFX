@@ -90,7 +90,7 @@ public class UserAuthorizingRealm extends AuthorizingRealm {
                     //清楚useInfo中密码
                     userInfo.setPassWord(null);
                     //存储用户信息
-                    UserContextHolder.setUserInfo(userInfo);
+                    //UserContextHolder.setUserInfo(userInfo);
                 }
             }
             return new SimpleAuthenticationInfo(userId,credentials,realmName);
