@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gfx.web.common.dao.mapper.StorageMapper">
+  <resultMap id="BaseResultMap" type="com.gfx.web.common.entity.Storage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="model_num" jdbcType="VARCHAR" property="modelNum" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="quality" jdbcType="VARCHAR" property="quality" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+    <result column="current_num" jdbcType="INTEGER" property="currentNum" />
+    <result column="init_num" jdbcType="INTEGER" property="initNum" />
+    <result column="repository_id" jdbcType="INTEGER" property="repositoryId" />
+    <result column="create_date" jdbcType="DATE" property="createDate" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+  </resultMap>
+</mapper>
