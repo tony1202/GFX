@@ -46,7 +46,7 @@
 			source : function(request, response){
 				$.ajax({
 					type : 'GET',
-					url : 'goodsManage/getGoodsList',
+					url : 'goods/getGoodsList',
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
@@ -86,7 +86,7 @@
 			source : function(request, response){
 				$.ajax({
 					type : "GET",
-					url : 'supplierManage/getSupplierList',
+					url : 'supplier/getSupplierList',
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
@@ -213,7 +213,7 @@
 	function repositorySelectorInit(){
 		$.ajax({
 			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
+			url : 'repository/getRepositoryList',
 			dataType : 'json',
 			contentType : 'application/json',
 			data : {

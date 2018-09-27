@@ -3,10 +3,10 @@ package com.gfx.web.common.entity;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "stock_out")
-public class StockOut {
+@Table(name = "stock_operator")
+public class StockOperator {
     /**
-     * 出库记录id
+     * 入库记录id
      */
     @Id
     @Column(name = "record_id")
@@ -25,10 +25,16 @@ public class StockOut {
     private String goodsType;
 
     /**
-     * 出货类型:生成出库,本厂维修出库,外发出库,报废
+     * 入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废
      */
-    @Column(name = "out_type")
-    private String outType;
+    @Column(name = "stock_type")
+    private String stockType;
+
+    /**
+     * 货物尺寸
+     */
+    @Column(name = "goods_size")
+    private String goodsSize;
 
     /**
      * 货物成色
@@ -37,10 +43,16 @@ public class StockOut {
     private String goodsQuality;
 
     /**
-     * 出库数量
+     * 入库数量
      */
     @Column(name = "goods_number")
     private Integer goodsNumber;
+
+    /**
+     * 库位id
+     */
+    @Column(name = "repository_id")
+    private String repositoryId;
 
     /**
      * 操作人
@@ -53,30 +65,24 @@ public class StockOut {
     private String remark;
 
     /**
-     * 出库时间
+     * 出入库时间
      */
-    @Column(name = "create_date")
-    private Date createDate;
+    @Column(name = "operator_date")
+    private Date operatorDate;
 
     /**
-     * 修改时间
-     */
-    @Column(name = "update_date")
-    private Date updateDate;
-
-    /**
-     * 获取出库记录id
+     * 获取入库记录id
      *
-     * @return record_id - 出库记录id
+     * @return record_id - 入库记录id
      */
     public String getRecordId() {
         return recordId;
     }
 
     /**
-     * 设置出库记录id
+     * 设置入库记录id
      *
-     * @param recordId 出库记录id
+     * @param recordId 入库记录id
      */
     public void setRecordId(String recordId) {
         this.recordId = recordId == null ? null : recordId.trim();
@@ -119,21 +125,39 @@ public class StockOut {
     }
 
     /**
-     * 获取出货类型:生成出库,本厂维修出库,外发出库,报废
+     * 获取入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废
      *
-     * @return out_type - 出货类型:生成出库,本厂维修出库,外发出库,报废
+     * @return stock_type - 入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废
      */
-    public String getOutType() {
-        return outType;
+    public String getStockType() {
+        return stockType;
     }
 
     /**
-     * 设置出货类型:生成出库,本厂维修出库,外发出库,报废
+     * 设置入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废
      *
-     * @param outType 出货类型:生成出库,本厂维修出库,外发出库,报废
+     * @param stockType 入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废
      */
-    public void setOutType(String outType) {
-        this.outType = outType == null ? null : outType.trim();
+    public void setStockType(String stockType) {
+        this.stockType = stockType == null ? null : stockType.trim();
+    }
+
+    /**
+     * 获取货物尺寸
+     *
+     * @return goods_size - 货物尺寸
+     */
+    public String getGoodsSize() {
+        return goodsSize;
+    }
+
+    /**
+     * 设置货物尺寸
+     *
+     * @param goodsSize 货物尺寸
+     */
+    public void setGoodsSize(String goodsSize) {
+        this.goodsSize = goodsSize == null ? null : goodsSize.trim();
     }
 
     /**
@@ -155,21 +179,39 @@ public class StockOut {
     }
 
     /**
-     * 获取出库数量
+     * 获取入库数量
      *
-     * @return goods_number - 出库数量
+     * @return goods_number - 入库数量
      */
     public Integer getGoodsNumber() {
         return goodsNumber;
     }
 
     /**
-     * 设置出库数量
+     * 设置入库数量
      *
-     * @param goodsNumber 出库数量
+     * @param goodsNumber 入库数量
      */
     public void setGoodsNumber(Integer goodsNumber) {
         this.goodsNumber = goodsNumber;
+    }
+
+    /**
+     * 获取库位id
+     *
+     * @return repository_id - 库位id
+     */
+    public String getRepositoryId() {
+        return repositoryId;
+    }
+
+    /**
+     * 设置库位id
+     *
+     * @param repositoryId 库位id
+     */
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId == null ? null : repositoryId.trim();
     }
 
     /**
@@ -209,38 +251,20 @@ public class StockOut {
     }
 
     /**
-     * 获取出库时间
+     * 获取出入库时间
      *
-     * @return create_date - 出库时间
+     * @return operator_date - 出入库时间
      */
-    public Date getCreateDate() {
-        return createDate;
+    public Date getOperatorDate() {
+        return operatorDate;
     }
 
     /**
-     * 设置出库时间
+     * 设置出入库时间
      *
-     * @param createDate 出库时间
+     * @param operatorDate 出入库时间
      */
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    /**
-     * 获取修改时间
-     *
-     * @return update_date - 修改时间
-     */
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    /**
-     * 设置修改时间
-     *
-     * @param updateDate 修改时间
-     */
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setOperatorDate(Date operatorDate) {
+        this.operatorDate = operatorDate;
     }
 }

@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!--指定对应表-->
-        <!--<table schema="" tableName="goods"/>-->
+        <table schema="" tableName="storage"/>
         <!--<table schema="" tableName="dir"/>-->
         <!--<table schema="" tableName="repository"/>-->
         <!--<table schema="" tableName="stock_in"/>-->
@@ -51,6 +51,6 @@
         <!--<table schema="" tableName="user"/>-->
 
         <!--将所有的表都生成-->
-        <table schema="" tableName="%"/>
+        <!--<table schema="" tableName="%"/>-->
     </context>
 </generatorConfiguration>

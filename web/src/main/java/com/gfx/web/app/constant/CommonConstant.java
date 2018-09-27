@@ -59,4 +59,12 @@ public abstract class CommonConstant {
         /**根据客户名字*/
         String SEARCH_TYPE_NAME = "searchByName";
     }
+
+    /**
+     * 入库类型
+     */
+    public interface StockInType{
+        /**采购入库*/
+        String PURCHASE = "0201";
+    }
 }

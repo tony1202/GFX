@@ -14,24 +14,26 @@ public class Storage {
     /**
      * 型号
      */
-    @Column(name = "model_num")
-    private String modelNum;
+    @Column(name = "goods_id")
+    private String goodsId;
 
     /**
      * 货物类型
      */
-    @Column(name = "TYPE")
-    private String type;
+    @Column(name = "goods_type")
+    private String goodsType;
 
     /**
      * 货物成色
      */
-    private String quality;
+    @Column(name = "goods_quality")
+    private String goodsQuality;
 
     /**
      * 货物尺寸
      */
-    private String size;
+    @Column(name = "goods_size")
+    private String goodsSize;
 
     /**
      * 当前库存
@@ -49,7 +51,7 @@ public class Storage {
      * 仓库id
      */
     @Column(name = "repository_id")
-    private Integer repositoryId;
+    private String repositoryId;
 
     /**
      * 创建时间
@@ -84,73 +86,73 @@ public class Storage {
     /**
      * 获取型号
      *
-     * @return model_num - 型号
+     * @return goods_id - 型号
      */
-    public String getModelNum() {
-        return modelNum;
+    public String getGoodsId() {
+        return goodsId;
     }
 
     /**
      * 设置型号
      *
-     * @param modelNum 型号
+     * @param goodsId 型号
      */
-    public void setModelNum(String modelNum) {
-        this.modelNum = modelNum == null ? null : modelNum.trim();
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId == null ? null : goodsId.trim();
     }
 
     /**
      * 获取货物类型
      *
-     * @return TYPE - 货物类型
+     * @return goods_type - 货物类型
      */
-    public String getType() {
-        return type;
+    public String getGoodsType() {
+        return goodsType;
     }
 
     /**
      * 设置货物类型
      *
-     * @param type 货物类型
+     * @param goodsType 货物类型
      */
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType == null ? null : goodsType.trim();
     }
 
     /**
      * 获取货物成色
      *
-     * @return quality - 货物成色
+     * @return goods_quality - 货物成色
      */
-    public String getQuality() {
-        return quality;
+    public String getGoodsQuality() {
+        return goodsQuality;
     }
 
     /**
      * 设置货物成色
      *
-     * @param quality 货物成色
+     * @param goodsQuality 货物成色
      */
-    public void setQuality(String quality) {
-        this.quality = quality == null ? null : quality.trim();
+    public void setGoodsQuality(String goodsQuality) {
+        this.goodsQuality = goodsQuality == null ? null : goodsQuality.trim();
     }
 
     /**
      * 获取货物尺寸
      *
-     * @return size - 货物尺寸
+     * @return goods_size - 货物尺寸
      */
-    public String getSize() {
-        return size;
+    public String getGoodsSize() {
+        return goodsSize;
     }
 
     /**
      * 设置货物尺寸
      *
-     * @param size 货物尺寸
+     * @param goodsSize 货物尺寸
      */
-    public void setSize(String size) {
-        this.size = size == null ? null : size.trim();
+    public void setGoodsSize(String goodsSize) {
+        this.goodsSize = goodsSize == null ? null : goodsSize.trim();
     }
 
     /**
@@ -194,7 +196,7 @@ public class Storage {
      *
      * @return repository_id - 仓库id
      */
-    public Integer getRepositoryId() {
+    public String getRepositoryId() {
         return repositoryId;
     }
 
@@ -203,8 +205,8 @@ public class Storage {
      *
      * @param repositoryId 仓库id
      */
-    public void setRepositoryId(Integer repositoryId) {
-        this.repositoryId = repositoryId;
+    public void setRepositoryId(String repositoryId) {
+        this.repositoryId = repositoryId == null ? null : repositoryId.trim();
     }
 
     /**

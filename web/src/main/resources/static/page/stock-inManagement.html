@@ -12,6 +12,10 @@
 		repositorySelectorInit();
 		dataValidateInit();
 		detilInfoToggle();
+		//初始化货物成色选择框
+        dirSelectInit("quality_selector","01");
+        //入库类型选择框
+        dirSelectInit("inType_selector","02");
 
 		stockInOption();
 		fetchStorage();
@@ -48,14 +52,14 @@
 			source : function(request, response){
 				$.ajax({
 					type : 'GET',
-					url : 'goodsManage/getGoodsList',
+					url : 'goods/getGoodsList',
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
 						offset : -1,
 						limit : -1,
 						keyWord : request.term,
-						searchType : 'searchByName'
+						searchType : 'searchByID'
 					},
 					success : function(data){
 						var autoCompleteInfo = new Array();
@@ -89,7 +93,7 @@
 			source : function(request, response){
 				$.ajax({
 					type : "GET",
-					url : 'supplierManage/getSupplierList',
+					url : 'supplier/getSupplierList',
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
@@ -121,47 +125,6 @@
 		})
 	}
 
-	// 填充供应商详细信息
-	function supplierInfoSet(supplierID){
-		var detailInfo;
-		$.each(supplierCache,function(index,elem){
-			if(elem.id == supplierID){
-				detailInfo = elem;
-
-				if(detailInfo.id==null)
-					$('#info_supplier_ID').text('-');
-				else
-					$('#info_supplier_ID').text(detailInfo.id);
-				
-				if(detailInfo.name==null)
-					$('#info_supplier_name').text('-');
-				else
-					$('#info_supplier_name').text(detailInfo.name);
-				
-				if(detailInfo.tel==null)
-					$('#info_supplier_tel').text('-');
-				else
-					$('#info_supplier_tel').text(detailInfo.tel);
-				
-				if(detailInfo.personInCharge==null)
-					$('#info_supplier_person').text('-');
-				else
-					$('#info_supplier_person').text(detailInfo.personInCharge);
-				
-				if(detailInfo.email==null)
-					$('#info_supplier_email').text('-');
-				else
-					$('#info_supplier_email').text(detailInfo.email);
-				
-				
-				if(detailInfo.adress==null)
-					$('#info_supplier_address').text('-');
-				else
-					$('#info_supplier_address').text(detailInfo.address);
-			}
-		})
-
-	}
 
 	// 填充货物详细信息
 	function goodsInfoSet(goodsID){
@@ -174,25 +137,25 @@
 				else
 					$('#info_goods_ID').text(detailInfo.id);
 				
-				if(detailInfo.name==null)
+				if(detailInfo.brand==null)
 					$('#info_goods_name').text('-');
 				else
-					$('#info_goods_name').text(detailInfo.name);
+					$('#info_goods_name').text(detailInfo.brand);
 				
-				if(detailInfo.type==null)
-					$('#info_goods_type').text('-');
+				if(detailInfo.typeName==null)
+					$('#info_goods_typeName').text('-');
 				else
-					$('#info_goods_type').text(detailInfo.type);
+					$('#info_goods_typeName').text(detailInfo.typeName);
 				
 				if(detailInfo.size==null)
 					$('#info_goods_size').text('-');
 				else
 					$('#info_goods_size').text(detailInfo.size);
 				
-				if(detailInfo.value==null)
-					$('#info_goods_value').text('-');
+				if(detailInfo.type==null)
+					$('#info_goods_type').text('-');
 				else
-					$('#info_goods_value').text(detailInfo.value);
+					$('#info_goods_type').text(detailInfo.type);
 			}
 		})
 	}
@@ -216,7 +179,7 @@
 	function repositorySelectorInit(){
 		$.ajax({
 			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
+			url : 'repository/getRepositoryList',
 			dataType : 'json',
 			contentType : 'application/json',
 			data : {
@@ -237,11 +200,39 @@
 		})
 	}
 
+    /**
+     * 货物成色选择初始化
+     * @param  element 下拉元素
+     * @param cid 分类id
+     */
+	function dirSelectInit(element,cid){
+	    $.ajax({
+            type: 'GET',
+            url: 'dir/listDir',
+            dataType: 'json',
+            contentType: 'application/json',
+            data:{
+                cid: cid
+            },
+            success: function (response) {
+                if (response.result=="success"){
+                    $.each(response.data,function (index,elem) {
+                        $('#'+element).append("<option value='" + elem.id + "'>" + elem.name +"</option>");
+                    });
+                }
+            },
+            error: function () {
+                $('#'+element).append("<option value='-1'> 加载失败 </option>");
+            }
+
+        })
+    }
+
 	// 获取仓库当前库存量
 	function fetchStorage(){
 		$('#repository_selector').change(function(){
 			stockin_repository = $(this).val();
-			loadStorageInfo();
+			//loadStorageInfo();
 		});
 	}
 
@@ -249,7 +240,7 @@
 		if(stockin_repository != null && stockin_goods != null){
 			$.ajax({
 				type : 'GET',
-				url : 'storageManage/getStorageListWithRepository',
+				url : 'storage/getStorageListWithRepository',
 				dataType : 'json',
 				contentType : 'application/json',
 				data : {
@@ -283,19 +274,29 @@
 				return;
 			}
 
-			data = {
-				repositoryID : stockin_repository,
-				supplierID : stockin_supplier,
-				goodsID : stockin_goods,
-				number : $('#stockin_input').val(),
-			}
+			var stockData = {
+				repositoryId : stockin_repository,
+				goodsId : stockin_goods,
+                goodsNumber : $('#stockin_input').val(),
+                goodsType: $('#info_goods_type').text(),
+                stockType: $('#inType_selector').val(),
+                goodsSize: $('#info_goods_size').text(),
+                goodsQuality: $('#quality_selector').val(),
+                remark: $('#remark_input').val()
+			};
+            //数据判断
+			if(!stockData.goodsId||!stockData.stockType||!stockData.goodsQuality||!stockData.repositoryId){
+			    console.log("****"+JSON.stringify(stockData));
+			    alert("入库信息没有填完整,请填完成所有信息输入!");
+			    return;
+            }
 
 			$.ajax({
 				type : 'POST',
-				url : 'stockRecordManage/stockIn',
+				url : 'stockRecord/stockIn',
 				dataType : 'json',
-				content : 'application/json',
-				data : data,
+				contentType : 'application/json',
+				data : JSON.stringify(stockData),
 				success : function(response){
 					var msg;
 					var type;
@@ -323,18 +324,19 @@
 		$('#supplier_input').val('');
 		$('#goods_input').val('');
 		$('#stockin_input').val('');
-		$('#info_supplier_ID').text('-');
-		$('#info_supplier_name').text('-');
-		$('#info_supplier_tel').text('-');
-		$('#info_supplier_address').text('-');
-		$('#info_supplier_email').text('-');
-		$('#info_supplier_person').text('-');
+		// $('#info_supplier_ID').text('-');
+		// $('#info_supplier_name').text('-');
+		// $('#info_supplier_tel').text('-');
+		// $('#info_supplier_address').text('-');
+		// $('#info_supplier_email').text('-');
+		// $('#info_supplier_person').text('-');
 		$('#info_goods_ID').text('-');
 		$('#info_goods_name').text('-');
 		$('#info_goods_size').text('-');
 		$('#info_goods_type').text('-');
-		$('#info_goods_value').text('-');
+		$('#info_goods_typeName').text('-');
 		$('#info_storage').text('-');
+		$('#remark_input').val('');
 		$('#stockin_form').bootstrapValidator("resetForm",true); 
 	}
 
@@ -347,33 +349,34 @@
 	</ol>
 	<div class="panel-body">
 		<div class="row">
+
 			<div class="col-md-6 col-sm-6">
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
 					<div class="col-md-10 col-sm-11">
 						<form action="" class="form-inline">
 							<div class="form-group">
-								<label for="" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;供应商：</label>
-								<input type="text" class="form-control" id="supplier_input" placeholder="请输入供应商名称">
+								<label for="" class="form-label">入库货物型号：</label>
+								<input type="text" class="form-control" id="goods_input" placeholder="请输入货物型号">
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6 col-sm-6">
-				<div class="row">
-					<div class="col-md-1 col-sm-1"></div>
-					<div class="col-md-10 col-sm-11">
-						<form action="" class="form-inline">
-							<div class="form-group">
-								<label for="" class="form-label">入库货物：</label>
-								<input type="text" class="form-control" id="goods_input" placeholder="请输入货物名称">
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+			<!--<div class="col-md-6 col-sm-6">-->
+				<!--<div class="row">-->
+					<!--<div class="col-md-1 col-sm-1"></div>-->
+					<!--<div class="col-md-10 col-sm-11">-->
+						<!--<form action="" class="form-inline">-->
+							<!--<div class="form-group">-->
+								<!--<label for="" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货物类型：</label>-->
+								<!--<input type="text" class="form-control" id="goodsType_input" placeholder="请输入货物类型">-->
+							<!--</div>-->
+						<!--</form>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
 		<div class="row visible-md visible-lg">
 			<div class="col-md-12 col-sm-12">
 				<div class='pull-right' style="cursor:pointer" id="info-show">
@@ -387,72 +390,6 @@
 			</div>
 		</div>
 		<div class="row hide" id="detailInfo" style="margin-bottom:30px">
-			<div class="col-md-6 col-sm-6  visible-md visible-lg">
-				<div class="row">
-					<div class="col-md-1 col-sm-1"></div>
-					<div class="col-md-10 col-sm-10">
-						<label for="" class="text-info">供应商信息</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-1 col-sm-1"></div>
-					<div class="col-md-11 col-sm-11">
-						<div class="col-md-6 col-sm-6">
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">供应商ID：</span>
-								</div>
-								<div class="col-md-6 col-sm-6">
-									<span id="info_supplier_ID">-</span>
-								</div>
-							</div>
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">负责人：</span>
-								</div>
-								<div class="col-md-6 col-sm-6">
-									<span id="info_supplier_person">-</span>
-								</div>
-							</div>
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">电子邮件：</span>
-								</div>
-								<div class="col-md-6">
-									<span id="info_supplier_email">-</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6 col-sm-6  visible-md visible-lg">
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">供应商名：</span>
-								</div>
-								<div class="col-md-6 col-sm-6">
-									<span id="info_supplier_name">-</span>
-								</div>
-							</div>
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">联系电话：</span>
-								</div>
-								<div class="col-md-6 col-sm-6">
-									<span id="info_supplier_tel">-</span>
-								</div>
-							</div>
-							<div style="margin-top:5px">
-								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">联系地址：</span>
-								</div>
-								<div class="col-md-6 col-sm-6">
-									<span id="info_supplier_address">-</span>
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
 			<div class="col-md-6 col-sm-6">
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
@@ -466,7 +403,7 @@
 						<div class="col-md-6 col-sm-6">
 							<div style="margin-top:5px">
 								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">货物ID：</span>
+									<span for="" class="pull-right">货物型号：</span>
 								</div>
 								<div class="col-md-6 col-sm-6">
 									<span id="info_goods_ID">-</span>
@@ -477,15 +414,15 @@
 									<span for="" class="pull-right">货物类型：</span>
 								</div>
 								<div class="col-md-6 col-sm-6">
-									<span id="info_goods_type">-</span>
+									<span id="info_goods_typeName">-</span>
 								</div>
 							</div>
-							<div style="margin-top:5px">
+							<div style="margin-top:5px" class="hidden">
 								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">货物名：</span>
+									<span for="" class="pull-right">货物类型代码：</span>
 								</div>
 								<div class="col-md-6 col-sm-6">
-									<span id="info_goods_name">-</span>
+									<span id="info_goods_type">-</span>
 								</div>
 							</div>
 						</div>
@@ -496,14 +433,15 @@
 								</div>
 								<div class="col-md-6 col-sm-6">
 									<span id="info_goods_size">-</span>
+                                    <span> 寸</span>
 								</div>
 							</div>
-							<div style="margin-top:5px">
+							<div style="margin-top:5px" >
 								<div class="col-md-6 col-sm-6">
-									<span for="" class="pull-right">货物价值：</span>
+									<span for="" class="pull-right">货物品牌：</span>
 								</div>
 								<div class="col-md-6 col-sm-6">
-									<span id="info_goods_value">-</span>
+									<span id="info_goods_name">-</span>
 								</div>
 							</div>
 						</div>
@@ -520,6 +458,22 @@
                             <div class="form-group">
                                 <label for="" class="form-label">入库仓库：</label>
                                 <select name="" id="repository_selector" class="form-control">
+                                    <option value="">请选择入库仓库</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">货物成色：</label>
+                                <select name="" id="quality_selector" class="form-control">
+                                    <option value="">请选择入库货物成色</option>
                                 </select>
                             </div>
                         </form>
@@ -528,6 +482,21 @@
             </div>
         </div>
 		<div class="row" style="margin-top:20px">
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">入库类型：</label>
+                                <select name="" id="inType_selector" class="form-control">
+                                    <option value="">请选择入库类型</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 			<div class="col-md-6 col-sm-6">
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
@@ -536,15 +505,31 @@
 							<div class="form-group">
 								<label for="" class="control-label">入库数量：</label>
 								<input type="text" class="form-control" placeholder="请输入数量" id="stockin_input" name="stockin_input">
-								<span>(当前库存量：</span>
-								<span id="info_storage">-</span>
-								<span>)</span>
+								<!--<span>(当前库存量：</span>-->
+								<!--<span id="info_storage">-</span>-->
+								<!--<span>)</span>-->
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
+        <div class="row" style="margin-top:20px">
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">入库备注：</label>
+                                <!--<input type="text" class="form-control" placeholder="入库备注说明" id="remark_input" name="remark_input">-->
+                                <textarea rows="3" cols="50%" class="form-control" name="remark_input" id="remark_input"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<div class="row" style="margin-top:80px"></div>
 	</div>
 	<div class="panel-footer">

@@ -58,11 +58,6 @@ public class GoodsServiceImpl implements GoodsService {
     public Map<String, Object> getGoodsList(Pagination pagination) {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> params = new HashMap<>();
-        if (pagination.getLimit() < 0 || pagination.getOffset() < 0) {
-            log.warn("the params is illegal --> limit or offset");
-            return null;
-        }
-
         switch (pagination.getSearchType()) {
             //查询所有
             case CommonConstant.GoodsConstant.SEARCH_TYPE_ALL:
@@ -79,9 +74,16 @@ public class GoodsServiceImpl implements GoodsService {
             default:
                 break;
         }
-        Page page = PageHelper.startPage(pagination.getOffset() + 1, pagination.getLimit(), true);
+        Page page = null;
+        if (pagination.getLimit() >= 0 && pagination.getOffset() >= 0) {
+            page = PageHelper.startPage(pagination.getOffset() + 1, pagination.getLimit(), true);
+        }
         List<GoodsDto> list = goodsMapper.getGoodsByPage(params);
-        result.put("total", page.getTotal());
+        if (page!=null){
+            result.put("total", page.getTotal());
+        }else {
+            result.put("total",(long)list.size());
+        }
         result.put("data", list);
 
         return result;

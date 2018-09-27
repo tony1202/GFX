@@ -106,34 +106,33 @@ CONSTRAINT fk_cs FOREIGN KEY (sale_man) REFERENCES USER(user_id)
 -- 库存表
 CREATE TABLE STORAGE(
 id varchar(50) PRIMARY KEY COMMENT '库存主键',
-model_num VARCHAR(50) NOT NULL COMMENT '型号',
-TYPE varchar(4) NOT NULL COMMENT '货物类型',
-quality varchar(4) NOT NULL COMMENT '货物成色',
-size VARCHAR(50) NOT NULL COMMENT '货物尺寸',
+goods_id VARCHAR(50) NOT NULL COMMENT '型号',
+goods_type varchar(4) NOT NULL COMMENT '货物类型',
+goods_quality varchar(4) NOT NULL COMMENT '货物成色',
+goods_size VARCHAR(50) NOT NULL COMMENT '货物尺寸',
 current_num INT NOT NULL COMMENT '当前库存',
 init_num int not null comment '初始库存',
-repository_id INT NOT NULL COMMENT '仓库id',
-create_date DATE NULL COMMENT '创建时间',
-update_date DATE NULL COMMENT '更新时间'
+repository_id varchar(20) NOT NULL COMMENT '仓库id',
+create_date timestamp NULL COMMENT '创建时间',
+update_date timestamp NULL COMMENT '更新时间'
 )CHARSET=utf8 COMMENT '库存表';
 
 -- 入库表
-create table stock_in(
+create table stock_operator(
 record_id varchar(30) primary key comment '入库记录id',
 goods_id VARCHAR(50) NOT NULL COMMENT '型号',
 goods_type varchar(4) NOT NULL COMMENT '货物类型',
-in_type varchar(4) not null comment '入库类型:采购入库,生成入库,本厂维修入库,外发入库,',
+stock_type varchar(4) not null comment '入库类型:采购入库,生成入库,本厂维修入库,外发入库,出货类型:生成出库,本厂维修出库,外发出库,报废',
 goods_size VARCHAR(50) NOT NULL COMMENT '货物尺寸',
 goods_quality varchar(4) NOT NULL COMMENT '货物成色',
 goods_number int not null comment '入库数量',
-repository_id int not null comment '库位id',
+repository_id varchar(20) not null comment '库位id',
 operator varchar(50) not null comment '操作人',
 remark varchar(200) null comment '备注',
-create_date date not null comment '入库时间',
-update_date date not null comment '修改时间',
+operator_date date not null comment '出入库时间',
 CONSTRAINT fk_stockIn_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id),
 constraint fk_stockIn_operator foreign key (operator) references user(user_id)
-)charset=utf8 comment '入库表';
+)charset=utf8 comment '出入库表操作';
 
 -- 出库表
 create table stock_out(
@@ -144,6 +143,7 @@ out_type varchar(4) not null comment '出货类型:生成出库,本厂维修出�
 goods_quality varchar(4) NOT NULL COMMENT '货物成色',
 goods_number int not null comment '出库数量',
 operator varchar(50) not null comment '操作人',
+repository_id varchar(20) not null comment '库位id',
 remark varchar(200) null comment '备注',
 create_date date not null comment '出库时间',
 update_date date not null comment '修改时间',
@@ -199,6 +199,7 @@ insert into user_role values('admin','commonsAdmin',null,null);
 insert into user_role values('tony','commonsAdmin',null,null);
 insert into user_role values('admin','systemAdmin',null,null);
 insert into user_role values('admin','admin',null,null);
+insert into user_role values('tony','systemAdmin',null,null);
 
 insert into dir values('0001','00','玻璃',null);
 insert into dir values('0002','00','背光',null);
@@ -219,3 +220,19 @@ insert into repository values ('A4','A区4号','0',null,null);
 insert into customer values (null,'华为','任总','10086',null,null,'admin');
 insert into customer values (null,'中兴','刘总','10000',null,null,'admin');
 insert into customer values (null,'京东','刘总','102369',null,null,'admin');
+
+-- 货物成色插入
+insert into dir values ('0101','01','ok',null,'货物成色');
+insert into dir values ('0102','01','A规',null,'货物成色');
+insert into dir values ('0103','01','B规',null,'货物成色');
+insert into dir values ('0104','01','线屏',null,'货物成色');
+insert into dir values ('0105','01','破',null,'货物成色');
+insert into dir values ('0106','01','花屏',null,'货物成色');
+insert into dir values ('0107','01','短路',null,'货物成色');
+
+-- 入库类型插入
+insert into dir values ('0201','02','采购入库',null,'入库类型');
+insert into dir values ('0202','02','生成入库',null,'入库类型');
+insert into dir values ('0203','02','维修入库',null,'入库类型');
+insert into dir values ('0204','02','外发入库',null,'入库类型');
+
