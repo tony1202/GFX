@@ -219,6 +219,8 @@
                     $.each(response.data,function (index,elem) {
                         $('#'+element).append("<option value='" + elem.id + "'>" + elem.name +"</option>");
                     });
+                    //当选择售后时，进行的操作
+                    showSaleAfter();
                 }
             },
             error: function () {
@@ -228,6 +230,18 @@
         })
     }
 
+    /**
+     * 显示售后入库操作选项
+     */
+    function showSaleAfter() {
+        $('#inType_selector').change(function () {
+            if ($(this).val()==='0205'){
+                $('#saleAfter').removeAttr('hidden');
+           }else {
+                $('#saleAfter').attr("hidden",'true');
+            }
+        });
+    }
 	// 获取仓库当前库存量
 	function fetchStorage(){
 		$('#repository_selector').change(function(){
@@ -348,7 +362,7 @@
 		<li>货物入库</li>
 	</ol>
 	<div class="panel-body">
-		<div class="row">
+		<div class="row" >
 
 			<div class="col-md-6 col-sm-6">
 				<div class="row">
@@ -490,7 +504,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">入库类型：</label>
                                 <select name="" id="inType_selector" class="form-control">
-                                    <option value="">请选择入库类型</option>
+                                    <option value="" >请选择入库类型</option>
                                 </select>
                             </div>
                         </form>
@@ -514,6 +528,40 @@
 				</div>
 			</div>
 		</div>
+        <!--退货入库需要的操作 start-->
+        <div id="saleAfter" class="row" style="margin-top:20px" hidden="true">
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">退货客户：</label>
+                                <select name="" id="customer_selector" class="form-control">
+                                    <option value="">请选择退货客户</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">业务员：</label>
+                                <select name="" id="saleMan_selector" class="form-control">
+                                    <option value="">请选择相应业务员</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--退货入库需要的操作 end-->
         <div class="row" style="margin-top:20px">
             <div class="col-md-6 col-sm-6">
                 <div class="row">

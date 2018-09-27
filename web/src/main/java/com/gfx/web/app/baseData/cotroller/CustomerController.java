@@ -87,7 +87,7 @@ public class CustomerController {
                 vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
             }
         } catch (Exception e) {
-            log.warn("add customer err -->{}",e);
+            log.warn("add customer err -->",e);
         }
         return vmsResponse.generateResponseBody();
     }

@@ -17,6 +17,6 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
     <select id="checkExist" resultType="java.lang.Integer">
-      SELECT count(1) from storage WHERE goods_id=#{goodsId} and goods_quality=#{goodsQuality}
+      SELECT id,goods_id,goods_type,current_num from storage WHERE goods_id=#{goodsId} and goods_quality=#{goodsQuality}
     </select>
 </mapper>

@@ -4,6 +4,9 @@ import com.gfx.web.common.entity.Storage;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
+
 @Repository
 public interface StorageMapper extends Mapper<Storage> {
     /**
@@ -12,7 +15,7 @@ public interface StorageMapper extends Mapper<Storage> {
      * @param goodsQuality 成色
      * @return
      */
-    int checkExist(@Param("goodsId") String goodsId, @Param("goodsQuality") String goodsQuality);
+    List<Storage> checkExist(@Param("goodsId") String goodsId, @Param("goodsQuality") String goodsQuality);
 
     /**
      * 跟新库存

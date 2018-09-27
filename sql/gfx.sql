@@ -117,7 +117,7 @@ create_date timestamp NULL COMMENT '创建时间',
 update_date timestamp NULL COMMENT '更新时间'
 )CHARSET=utf8 COMMENT '库存表';
 
--- 入库表
+-- 出入库表
 create table stock_operator(
 record_id varchar(30) primary key comment '入库记录id',
 goods_id VARCHAR(50) NOT NULL COMMENT '型号',
@@ -235,4 +235,8 @@ insert into dir values ('0201','02','采购入库',null,'入库类型');
 insert into dir values ('0202','02','生成入库',null,'入库类型');
 insert into dir values ('0203','02','维修入库',null,'入库类型');
 insert into dir values ('0204','02','外发入库',null,'入库类型');
+
+-- 插入售后入库类型
+insert into dir values ('0205','02','售后入库',null,'入库类型');
+
 

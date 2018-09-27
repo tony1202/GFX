@@ -6,6 +6,8 @@ import com.gfx.web.common.entity.Storage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author tony
  * @date 2018/9/27
@@ -27,18 +29,20 @@ public class StorageServiceImpl implements StorageService {
      */
     @Override
     public void addStorage(Storage storage) {
-        boolean res = checkExist(storage);
-        if (res){//已经存在
+        Storage currentStorage = checkExist(storage);
+        if (currentStorage!=null){//已经存在
             storageMapper.updateStorage(storage);
         }
     }
 
-    private boolean checkExist(Storage storage){
+    private Storage checkExist(Storage storage){
         if (storage!=null){
 
-            int num = storageMapper.checkExist(storage.getGoodsId(),storage.getGoodsQuality());
-            return num>0;
+            List<Storage> storages = storageMapper.checkExist(storage.getGoodsId(),storage.getGoodsQuality());
+            if (storages.size()>0){
+                return storages.get(0);
+            }
         }
-        return true;
+        return null;
     }
 }

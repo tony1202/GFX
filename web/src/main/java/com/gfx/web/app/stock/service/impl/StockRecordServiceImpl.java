@@ -39,17 +39,15 @@ public class StockRecordServiceImpl implements StockRecordService{
     @Override
     @Transactional
     public boolean stockIn(StockOperator stockIn) {
-        if (StringUtils.equals(CommonConstant.StockInType.PURCHASE,stockIn.getStockType())){
+        if (StringUtils.equals(CommonConstant.StockInType.PURCHASE,stockIn.getStockType())) {
             Storage storage = new Storage();
-            BeanUtils.copyProperties(stockIn,storage);
-            //生成id
-            storage.setId(UUIDUtils.uuid("S"));
+            BeanUtils.copyProperties(stockIn, storage);
+
             storage.setCreateDate(new Date());
             storage.setUpdateDate(new Date());
             storage.setCurrentNum(stockIn.getGoodsNumber());
             storage.setInitNum(stockIn.getGoodsNumber());
-            storageService.addStorage(storage);
-
+            //storageService.addStorage(storage);
         }
         return stockOperatorMapper.insertSelective(stockIn)==1;
     }
