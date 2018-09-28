@@ -128,13 +128,15 @@ goods_quality varchar(4) NOT NULL COMMENT '货物成色',
 goods_number int not null comment '入库数量',
 repository_id varchar(20) not null comment '库位id',
 operator varchar(50) not null comment '操作人',
+customer_id int null comment '客户id',
+sale_man varchar(30) null comment '业务员id',
 remark varchar(200) null comment '备注',
-operator_date date not null comment '出入库时间',
+operator_date timestamp not null comment '出入库时间',
 CONSTRAINT fk_stockIn_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id),
 constraint fk_stockIn_operator foreign key (operator) references user(user_id)
 )charset=utf8 comment '出入库表操作';
 
--- 出库表
+-- 出库表(已废弃)
 create table stock_out(
 record_id varchar(30) primary key comment '出库记录id',
 goods_id varchar(50) not null comment '型号',
@@ -151,7 +153,7 @@ constraint fk_stockOut_operator foreign key (operator) references user(user_id),
 CONSTRAINT fk_stockOut_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 )charset=utf8 comment '出库表';
 
--- 销售出库表
+-- 销售出库表(已废弃)
 create table sale(
 record_id varchar(30) primary key comment '出库记录id',
 goods_id varchar(50) not null comment '型号',
@@ -169,7 +171,7 @@ constraint fk_sale_operator foreign key (operator) references user(user_id),
 CONSTRAINT fk_sale_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 )charset=utf8 comment '销售出库';
 
--- 售后入库表
+-- 售后入库表(已废弃)
 create table afterSale(
 record_id varchar(30) primary key comment '出库记录id',
 goods_id varchar(50) not null comment '型号',
@@ -232,11 +234,20 @@ insert into dir values ('0107','01','短路',null,'货物成色');
 
 -- 入库类型插入
 insert into dir values ('0201','02','采购入库',null,'入库类型');
-insert into dir values ('0202','02','生成入库',null,'入库类型');
+insert into dir values ('0202','02','生产入库',null,'入库类型');
 insert into dir values ('0203','02','维修入库',null,'入库类型');
 insert into dir values ('0204','02','外发入库',null,'入库类型');
 
 -- 插入售后入库类型
 insert into dir values ('0205','02','售后入库',null,'入库类型');
 
+-- 2018/9/28
+insert into role values ('saleMan','业务员','0',null,null);
+insert into user_role values ('tony','saleMan',null,null);
+
+insert into dir values ('0301','03','销售出库',null,'出库类型');
+insert into dir values ('0302','03','样品出库',null,'出库类型');
+insert into dir values ('0303','03','维修出库',null,'出库类型');
+insert into dir values ('0304','03','外发出库',null,'出库类型');
+insert into dir values ('0305','03','生产出库',null,'出库类型');
 

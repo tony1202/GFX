@@ -64,7 +64,7 @@ public class CustomerController {
                 vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
             }
         } catch (Exception e) {
-            log.warn("customer list is error ->{}", e);
+            log.warn("customer list is error ->", e);
         }
 
         return vmsResponse.generateResponseBody();
@@ -92,4 +92,20 @@ public class CustomerController {
         return vmsResponse.generateResponseBody();
     }
 
+
+    /**
+     * 通过ajax获取所有客户
+     * @return 响应
+     */
+    @GetMapping("/getCustomerListAjax")
+    public Map<String,Object> getCustomerListAjax(){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        List<Customer> list = customerService.getCustomerListAjax();
+        if (list.size()>0){
+            vmsResponse.setResponseBodyData(list);
+            vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+        }
+        return vmsResponse.generateResponseBody();
+    }
 }

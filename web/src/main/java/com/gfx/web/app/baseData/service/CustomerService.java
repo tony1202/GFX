@@ -3,6 +3,7 @@ package com.gfx.web.app.baseData.service;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.common.entity.Customer;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,4 +26,10 @@ public interface CustomerService {
      * @return 新增结果
      */
     Boolean addCustomer(Customer customer);
+
+    /**
+     * 通过ajax获取所有客户
+     * @return 客户集合
+     */
+    List<Customer> getCustomerListAjax();
 }

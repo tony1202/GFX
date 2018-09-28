@@ -11,4 +11,6 @@ import java.util.Map;
 @Repository
 public interface GoodsMapper extends Mapper<Goods> {
     List<GoodsDto> getGoodsByPage(@Param("params") Map<String, Object> params);
+
+    List<GoodsDto> getGoodsListAjax(@Param("goodsId") String goodsId, @Param("goodsType") String goodsType);
 }

@@ -1,14 +1,13 @@
 package com.gfx.web.app.baseData.service.impl;
 
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.app.baseData.service.GoodsService;
 import com.gfx.web.app.constant.CommonConstant;
-import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.common.dao.mapper.GoodsMapper;
 import com.gfx.web.common.entity.Goods;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,4 +103,16 @@ public class GoodsServiceImpl implements GoodsService {
         return result;
     }
 
+    /**
+     * 通过ajax请求获取货物列表
+     *
+     * @param goodsId   货物id
+     * @param goodsType 货物类型
+     * @return
+     */
+    @Override
+    public List<GoodsDto> getGoodsListAjax(String goodsId, String goodsType) {
+
+        return goodsMapper.getGoodsListAjax(goodsId,goodsType);
+    }
 }

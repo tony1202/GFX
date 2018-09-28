@@ -1,8 +1,10 @@
 package com.gfx.web.app.baseData.service;
 
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.common.entity.Goods;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,4 +32,12 @@ public interface GoodsService {
      * @return 更新结果
      */
     String updateGoods(Goods goods);
+
+    /**
+     * 通过ajax请求获取货物列表
+     * @param goodsId 货物id
+     * @param goodsType 货物类型
+     * @return
+     */
+    List<GoodsDto> getGoodsListAjax(String goodsId, String goodsType);
 }

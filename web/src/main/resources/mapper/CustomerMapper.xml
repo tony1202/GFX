@@ -28,4 +28,7 @@
         </if>
       </where>
     </select>
+  <select id="getCustomerListAjax" resultType="com.gfx.web.common.entity.Customer">
+    SELECT id,name FROM customer
+  </select>
 </mapper>

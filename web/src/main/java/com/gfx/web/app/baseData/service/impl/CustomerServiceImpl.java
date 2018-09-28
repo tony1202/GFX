@@ -41,32 +41,38 @@ public class CustomerServiceImpl implements CustomerService {
      */
     @Override
     public Map<String, Object> getCustomerList(Pagination pagination, String userId, String isAdmin) {
-        Map<String,Object> result = new HashMap<>();
-        Map<String,Object> params = new HashMap<>();
-        params.put("isAdmin",isAdmin);
-        params.put("userId",userId);
-        if (pagination.getOffset()<0||pagination.getLimit()<0){
-            log.warn("pagination is error ->{}",pagination);
-            return null;
-        }
-
-        switch (pagination.getSearchType()){
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("isAdmin", isAdmin);
+        params.put("userId", userId);
+        switch (pagination.getSearchType()) {
             case CommonConstant.CustomerConstant.SEARCH_TYPE_ALL:
                 break;
             case CommonConstant.CustomerConstant.SEARCH_TYPE_LINK_MAN:
-                params.put("linkMan",pagination.getKeyWord());
+                params.put("linkMan", pagination.getKeyWord());
                 break;
             case CommonConstant.CustomerConstant.SEARCH_TYPE_NAME:
-                params.put("name",pagination.getKeyWord());
+                params.put("name", pagination.getKeyWord());
                 break;
-            default: break;
+            default:
+                break;
         }
-        Page<Object> page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        Page<Customer> page = null;
+        if (pagination.getOffset() >= 0 || pagination.getLimit() >= 0) {
+            page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        }
         List<Customer> list = customerMapper.getCustomerList(params);
-        result.put("total",page.getTotal());
-        result.put("data",list);
+        if (page != null){
+
+            result.put("total", page.getTotal());
+        }else {
+
+            result.put("total", (long)list.size());
+        }
+        result.put("data", list);
         return result;
     }
+
 
     /**
      * 新客户
@@ -77,7 +83,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean addCustomer(Customer customer) {
 
-        return customerMapper.insert(customer)==1;
+        return customerMapper.insert(customer) == 1;
     }
 
+
+    /**
+     * 通过ajax获取所有客户
+     *
+     * @return 客户集合
+     */
+    @Override
+    public List<Customer> getCustomerListAjax() {
+
+        return customerMapper.getCustomerListAjax();
+    }
 }

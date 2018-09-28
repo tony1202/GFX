@@ -12,4 +12,6 @@ import java.util.Map;
 public interface CustomerMapper extends Mapper<Customer> {
     List<Customer> getCustomerList(@Param("params") Map<String, Object> params);
 
+    List<Customer> getCustomerListAjax();
+
 }

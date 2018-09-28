@@ -14,7 +14,9 @@
     <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
     <result column="repository_id" jdbcType="VARCHAR" property="repositoryId" />
     <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="sale_man" jdbcType="VARCHAR" property="saleMan" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="operator_date" jdbcType="DATE" property="operatorDate" />
+    <result column="operator_date" jdbcType="TIMESTAMP" property="operatorDate" />
   </resultMap>
 </mapper>

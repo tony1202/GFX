@@ -60,6 +60,18 @@ public class StockOperator {
     private String operator;
 
     /**
+     * 客户id
+     */
+    @Column(name = "customer_id")
+    private Integer customerId;
+
+    /**
+     * 业务员id
+     */
+    @Column(name = "sale_man")
+    private String saleMan;
+
+    /**
      * 备注
      */
     private String remark;
@@ -230,6 +242,42 @@ public class StockOperator {
      */
     public void setOperator(String operator) {
         this.operator = operator == null ? null : operator.trim();
+    }
+
+    /**
+     * 获取客户id
+     *
+     * @return customer_id - 客户id
+     */
+    public Integer getCustomerId() {
+        return customerId;
+    }
+
+    /**
+     * 设置客户id
+     *
+     * @param customerId 客户id
+     */
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
+    /**
+     * 获取业务员id
+     *
+     * @return sale_man - 业务员id
+     */
+    public String getSaleMan() {
+        return saleMan;
+    }
+
+    /**
+     * 设置业务员id
+     *
+     * @param saleMan 业务员id
+     */
+    public void setSaleMan(String saleMan) {
+        this.saleMan = saleMan == null ? null : saleMan.trim();
     }
 
     /**

@@ -24,4 +24,8 @@
 
         </where>
     </select>
+    <select id="getGoodsListAjax" resultType="com.gfx.web.app.baseData.dto.GoodsDto">
+        select g.id,g.brand,g.type,g.size,d.NAME as typeName from goods g LEFT JOIN dir d ON g.TYPE = d.id
+        WHERE g.type = #{goodsType} and g.id like concat("%",#{goodsId},"%")
+    </select>
 </mapper>

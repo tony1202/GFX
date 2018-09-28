@@ -4,8 +4,8 @@
 	var stockin_supplier = null;// 入库供应商编号
 	var stockin_goods = null;// 入库货物编号
 	var stockin_number = null;// 入库数量
+    var goodsType = null;//货物类型
 
-	var supplierCache = new Array();// 供应商信息缓存
 	var goodsCache = new Array();//货物信息缓存
 
 	$(function(){
@@ -19,9 +19,12 @@
 
 		stockInOption();
 		fetchStorage();
-		supplierAutocomplete();
+        saleManInit();
+        customerInit();
+		//supplierAutocomplete();
 		goodsAutocomplete();
-	})
+        goodsTypeInit();
+	});
 
 	// 数据校验
 	function dataValidateInit(){
@@ -52,16 +55,19 @@
 			source : function(request, response){
 				$.ajax({
 					type : 'GET',
-					url : 'goods/getGoodsList',
+					url : 'goods/getGoodsListAjax',
 					dataType : 'json',
 					contentType : 'application/json',
 					data : {
-						offset : -1,
-						limit : -1,
-						keyWord : request.term,
-						searchType : 'searchByID'
+
+						goodsId : request.term,
+						goodsType : goodsType
 					},
 					success : function(data){
+					    if(data.result==='error'){
+					        showMsg('error','当前系统中没有改货物,请先添加货物基础数据','');
+					        return;
+                        }
 						var autoCompleteInfo = new Array();
 						$.each(data.rows, function(index,elem){
 							goodsCache.push(elem);
@@ -84,47 +90,6 @@
 			}
 		})
 	}
-
-	// 供应商信息自动匹配
-	function supplierAutocomplete(){
-		$('#supplier_input').autocomplete({
-			minLength : 0,
-			delay:500,
-			source : function(request, response){
-				$.ajax({
-					type : "GET",
-					url : 'supplier/getSupplierList',
-					dataType : 'json',
-					contentType : 'application/json',
-					data : {
-						offset : -1,
-						limit : -1,
-						searchType : 'searchByName',
-						keyWord : request.term
-					},
-					success : function(data){
-						var autoCompleteInfo = new Array();
-						$.each(data.rows,function(index, elem){
-							supplierCache.push(elem);
-							autoCompleteInfo.push({label:elem.name,value:elem.id});
-						});
-						response(autoCompleteInfo);
-					}
-				});
-			},
-			focus : function(event, ui){
-				$('#supplier_input').val(ui.item.label);
-				return false;
-			},
-			select : function(event, ui){
-				$('#supplier_input').val(ui.item.label);
-				stockin_supplier = ui.item.value;
-				supplierInfoSet(stockin_supplier);
-				return false;
-			}
-		})
-	}
-
 
 	// 填充货物详细信息
 	function goodsInfoSet(goodsID){
@@ -199,6 +164,49 @@
 			
 		})
 	}
+
+	/**
+     * 初始化客户选择下拉框
+     */
+	function customerInit() {
+        $.ajax({
+            type: 'GET',
+            url: 'customer/getCustomerListAjax',
+            dataType:'json',
+            contentType: 'application/json',
+            success: function (response) {
+                $.each(response.data, function (index,elem) {
+                    $('#customer_selector').append("<option value='" + elem.id + "'>" + elem.name +"</option>");
+                });
+            },
+            error: function () {
+                $('#customer_selector').append("<option value='-1'> 加载失败 </option>");
+            }
+        });
+    }
+
+    /**
+     * 业务员初始化
+     */
+    function saleManInit() {
+        $.ajax({
+            type: 'GET',
+            url: 'userManage/getUserByRoleId',
+            dataType:'json',
+            contentType: 'application/json',
+            data:{
+                roleId: 'saleMan'
+            },
+            success: function (response) {
+                $.each(response.data, function (index,elem) {
+                    $('#saleMan_selector').append("<option value='" + elem.userId + "'>" + elem.userName +"</option>");
+                });
+            },
+            error: function () {
+                $('#saleMan_selector').append("<option value='-1'> 加载失败 </option>");
+            }
+        });
+    }
 
     /**
      * 货物成色选择初始化
@@ -296,15 +304,19 @@
                 stockType: $('#inType_selector').val(),
                 goodsSize: $('#info_goods_size').text(),
                 goodsQuality: $('#quality_selector').val(),
-                remark: $('#remark_input').val()
+                remark: $('#remark_input').val(),
+                customerId: $('#customer_selector').val(),
+                saleMan: $('#saleMan_selector').val()
 			};
             //数据判断
 			if(!stockData.goodsId||!stockData.stockType||!stockData.goodsQuality||!stockData.repositoryId){
-			    console.log("****"+JSON.stringify(stockData));
-			    alert("入库信息没有填完整,请填完成所有信息输入!");
+                showMsg('error', '入库信息没有填完整', '');
 			    return;
             }
-
+            if(stockData.stockType==='0205'&&(!stockData.customerId||!stockData.saleMan)){
+                showMsg('error', '售后入库,请选择客户和相关业务员', '');
+                return;
+            }
 			$.ajax({
 				type : 'POST',
 				url : 'stockRecord/stockIn',
@@ -353,6 +365,40 @@
 		$('#remark_input').val('');
 		$('#stockin_form').bootstrapValidator("resetForm",true); 
 	}
+    /**
+     * 货物类型初始化
+     */
+	function goodsTypeInit() {
+        $.ajax({
+            type : "GET",
+            url : "dir/listDir",
+            dataType : "json",
+            data : {
+               cid: '00' //货物类型id为00
+            },
+            success : function (response) {
+                $.each(response.data,function (index,elem) {
+                    $('#goodsType_input').append('<option value="'+elem.id+'">'+elem.name+'</option>');
+                })
+            },
+            error: function () {
+                $('#goodsType_input').append('<option value="-1">加载失败</option>');
+            }
+        });
+    }
+
+    /**
+     * 货物输入的隐藏和显示
+     * @param elem
+     */
+    function showGoodsInput(elem) {
+        goodsType = $(elem).val();
+        if (goodsType){
+            $('#goodsId').removeAttr('hidden');
+        }else{
+            $('#goodsId').attr('hidden','true');
+        }
+    }
 
 </script>
 
@@ -363,8 +409,23 @@
 	</ol>
 	<div class="panel-body">
 		<div class="row" >
-
-			<div class="col-md-6 col-sm-6">
+            <div class="col-md-6 col-sm-6">
+                <div class="row">
+                    <div class="col-md-1 col-sm-1"></div>
+                    <div class="col-md-10 col-sm-11">
+                        <form action="" class="form-inline">
+                            <div class="form-group">
+                                <label for="" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货物类型：</label>
+                                <!--<input type="text" class="form-control" id="goodsType_input" placeholder="请输入货物类型">-->
+                                <select name="" id="goodsType_input" class="form-control" onchange="showGoodsInput(this)">
+                                    <option value="">请输入货物类型</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+			<div class="col-md-6 col-sm-6" id="goodsId" hidden="true">
 				<div class="row">
 					<div class="col-md-1 col-sm-1"></div>
 					<div class="col-md-10 col-sm-11">
@@ -377,20 +438,8 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="col-md-6 col-sm-6">-->
-				<!--<div class="row">-->
-					<!--<div class="col-md-1 col-sm-1"></div>-->
-					<!--<div class="col-md-10 col-sm-11">-->
-						<!--<form action="" class="form-inline">-->
-							<!--<div class="form-group">-->
-								<!--<label for="" class="form-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货物类型：</label>-->
-								<!--<input type="text" class="form-control" id="goodsType_input" placeholder="请输入货物类型">-->
-							<!--</div>-->
-						<!--</form>-->
-					<!--</div>-->
-				<!--</div>-->
-			<!--</div>-->
-		<!--</div>-->
+
+		</div>
 		<div class="row visible-md visible-lg">
 			<div class="col-md-12 col-sm-12">
 				<div class='pull-right' style="cursor:pointer" id="info-show">

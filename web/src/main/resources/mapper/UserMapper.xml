@@ -15,4 +15,7 @@
     <select id="getUserById" resultType="com.gfx.web.common.entity.User">
       select user_id,user_name,pass_word from user where user_id=#{userId} and user_status='0'
     </select>
+    <select id="getUserListByRoleId" resultType="com.gfx.web.common.entity.User">
+      SELECT u.user_id,u.user_name from user u LEFT JOIN user_role ur ON u.user_id = ur.u_id  WHERE u.user_status = '0' AND ur.r_id = #{roleId}
+    </select>
 </mapper>

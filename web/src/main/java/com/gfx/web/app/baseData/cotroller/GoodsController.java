@@ -1,8 +1,8 @@
 package com.gfx.web.app.baseData.cotroller;
 
+import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.app.baseData.service.GoodsService;
 import com.gfx.web.app.constant.CommonConstant;
-import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
@@ -103,4 +103,26 @@ public class GoodsController {
         return vmsResponse.generateResponseBody();
     }
 
+    /**
+     * 通过ajax获取货物列表
+     * @param goodsId 货物id
+     * @param goodsType 货物类型
+     * @return
+     */
+    @GetMapping("/getGoodsListAjax")
+    public Map<String,Object> getGoodsListAjax(@RequestParam("goodsId")String goodsId,@RequestParam("goodsType")String goodsType){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        if (StringUtils.isNoneBlank(goodsId,goodsType)){
+            //货物id支持模糊查询,不区分大小写
+            List<GoodsDto> list = goodsService.getGoodsListAjax(goodsId.toUpperCase(),goodsType);
+            if (list.size()>0){
+                vmsResponse.setResponseBodyTotal((long)list.size());
+                vmsResponse.setCustomerInfo("rows",list);
+                vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+            }
+        }
+
+        return vmsResponse.generateResponseBody();
+    }
 }
