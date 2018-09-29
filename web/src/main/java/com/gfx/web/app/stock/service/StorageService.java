@@ -1,9 +1,11 @@
 package com.gfx.web.app.stock.service;
 
+import com.gfx.web.app.stock.dto.StoragePagination;
 import com.gfx.web.common.entity.StockOperator;
 import com.gfx.web.common.entity.Storage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tony
@@ -30,4 +32,11 @@ public interface StorageService {
      * @param stockOut 出库操作
      */
     void reduceStorage(StockOperator stockOut);
+
+    /**
+     * 分页查询库存
+     * @param pagination 分页条件
+     * @return
+     */
+    Map<String,Object> getStorageList(StoragePagination pagination);
 }

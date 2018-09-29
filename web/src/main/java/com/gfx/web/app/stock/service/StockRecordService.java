@@ -1,6 +1,9 @@
 package com.gfx.web.app.stock.service;
 
+import com.gfx.web.app.stock.dto.StockRecordPagination;
 import com.gfx.web.common.entity.StockOperator;
+
+import java.util.Map;
 
 /**
  * @author tony
@@ -20,4 +23,11 @@ public interface StockRecordService {
      * @return
      */
     boolean stockOut(StockOperator stockOut);
+
+    /**
+     * 分页查询出入库记录
+     * @param pagination 分页数据
+     * @return key:total - 数量; key:data - 具体数据
+     */
+    Map<String,Object> searchStockRecord(StockRecordPagination pagination);
 }

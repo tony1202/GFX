@@ -2,7 +2,7 @@
 <script>
     // 出入库记录查询参数
     search_type = 'none'
-    search_repositoryID = ''
+    search_goodsType = ''
     search_start_date = null
     search_end_date = null
 
@@ -27,7 +27,7 @@
 			},
 			success : function(response){
 				$.each(response.data,function(index,elem){
-					$('#search_goods_cid').append("<option value='" + elem.id + "'>" + elem.name +"</option>");
+					$('#search_goodsType').append("<option value='" + elem.id + "'>" + elem.name +"</option>");
 				})
 			},
 			error : function(response){
@@ -39,7 +39,7 @@
 	// 日期选择器初始化
 	function datePickerInit(){
 		$('.form_date').datetimepicker({
-			format:'yyyy-mm-dd',
+			format:'yyyy-mm-dd 00:00:00',
 			language : 'zh-CN',
 			endDate : new Date(),
 			weekStart : 1,
@@ -59,42 +59,63 @@
 						{
 							columns : [
 									{
-										field : 'recordID',
+										field : 'recordId',
 										title : '记录ID'
 									//sortable: true
 									},
 									{
 										field : 'supplierOrCustomerName',
 										title : '供应商/客户名称'
+
 									},
 									{
-										field : 'goodsName',
-										title : '商品名称'
+										field : 'goodsId',
+										title : '商品型号'
 									},
 									{
-										field : 'repositoryID',
-										title : '出/入库仓库ID'
+										field : 'repositoryId',
+										title : '出/入库库位'
 										//visible : false
 									},
+                                    {
+                                        field : 'goodsSize',
+                                        title : '商品尺寸'
+                                    },
+                                    {
+                                      field : 'goodsTypeName',
+                                      title : '商品类型'
+                                    },
+                                    {
+                                        field : 'goodsQualityName',
+                                        title : '商品成色'
+                                    },
 									{
-										field : 'number',
+										field : 'goodsNumber',
 										title : '数量'
 										//visible : false
 									},
 									{
-										field : 'time',
+										field : 'operatorDate',
 										title : '日期'
 									},
 									{
-										field : 'personInCharge',
+										field : 'operatorName',
 										title : '经手人'
 									},
+                                    {
+                                        field : 'saleManName',
+                                        title : '业务员'
+                                    },
 									{
-										field : 'type',
+										field : 'operateTypeName',
 										title : '记录类型'
-									}
+									},
+                                    {
+                                        field : 'remark',
+                                        title : '出/入库备注'
+                                    }
                             ],
-							url: 'stock/searchStockRecord',
+							url: 'stockRecord/searchStockRecord',
 							onLoadError:function(status){
 								handleAjaxError(status);
 							},
@@ -123,17 +144,17 @@
 			limit : params.limit,
 			offset : params.offset,
 			searchType : search_type,
-			repositoryID : search_repositoryID,
+			goodsType : search_goodsType,
 			startDate : search_start_date,
 			endDate : search_end_date
-		}
+		};
 		return temp;
 	}
 
 	// 查询操作
 	function searchAction(){
 	    $('#search_button').click(function(){
-	        search_repositoryID = $('#search_repository_ID').val();
+            search_goodsType = $('#search_goodsType').val();
 	        search_type = $('#search_type').val();
 	        search_start_date = $('#search_start_date').val();
 	        search_end_date = $('#search_end_date').val();
@@ -152,7 +173,7 @@
                 <form action="" class="form-inline">
                     <div class="form-group">
                         <label class="form-label">货物类型：</label>
-                        <select class="form-control" id="search_goods_cid">
+                        <select class="form-control" id="search_goodsType">
                             <option value="">所有货物</option>
                         </select>
                     </div>

@@ -1,18 +1,23 @@
 package com.gfx.web.app.stock.controller;
 
+import com.gfx.web.app.stock.dto.StockRecordDto;
+import com.gfx.web.app.stock.dto.StockRecordPagination;
 import com.gfx.web.app.stock.service.StockRecordService;
 import com.gfx.web.base.context.UserContextHolder;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
+import com.gfx.web.base.exception.StorageException;
 import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.StockOperator;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -81,10 +86,23 @@ public class StockRecordController {
      * @return 出入库记录
      */
     @GetMapping("/searchStockRecord")
-    public Map<String,Object> searchStockRecord(Pagination pagination){
+    public Map<String,Object> searchStockRecord(StockRecordPagination pagination){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
-
+        try {
+            Map<String,Object> map = stockRecordService.searchStockRecord(pagination);
+            if (MapUtils.isNotEmpty(map)){
+                if (map.get("data")!=null){
+                    List<StockRecordDto> list = (List<StockRecordDto>) map.get("data");
+                    vmsResponse.setCustomerInfo("rows",list);
+                }
+                vmsResponse.setResponseBodyTotal((Long) map.get("total"));
+                vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+            }
+        } catch (Exception e) {
+            log.warn("stockInOut is error ->",e);
+            throw new StorageException("出入库查询异常");
+        }
         return vmsResponse.generateResponseBody();
     }
 

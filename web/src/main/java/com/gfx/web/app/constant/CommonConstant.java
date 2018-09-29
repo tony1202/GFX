@@ -67,4 +67,14 @@ public abstract class CommonConstant {
         /**采购入库*/
         String PURCHASE = "0201";
     }
+
+    /**
+     * 字典表分类ID
+     */
+    public interface DirCid{
+        /**入库操作*/
+        String STOCKIN = "02";
+        /**出库操作*/
+        String STOCKOUT = "03";
+    }
 }

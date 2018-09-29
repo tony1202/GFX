@@ -34,4 +34,28 @@
             and repository_id=#{repositoryId}
         </if>
     </select>
+    <select id="getStorageList" resultType="com.gfx.web.app.stock.dto.StorageDto">
+        SELECT
+            s.id,
+            s.goods_id,
+            s.repository_id,
+            s.current_num,
+            s.goods_size,
+            s.init_num,
+            d1.name as goodsTypeName,
+            d2.NAME as goodsQualityName
+          FROM storage s
+            LEFT JOIN dir d1 ON s.goods_type = d1.id
+            LEFT JOIN dir d2 ON s.goods_quality = d2.id
+        WHERE s.storage_status = '0'
+        <if test="params.goodsType!=null and params.goodsType!=''">
+            AND s.goods_type = #{params.goodType}
+        </if>
+        <if test="params.goodsId!=null and params.goodsId!=''">
+            and s.goods_id like concat("%",#{params.goodsId},"%")
+        </if>
+        <if test="params.goodsSize!=null and params.goodsSize!=''">
+            and s.goods_size like concat("%",#{params.goodsSize},"%")
+        </if>
+    </select>
 </mapper>

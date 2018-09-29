@@ -19,4 +19,44 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="operator_date" jdbcType="TIMESTAMP" property="operatorDate" />
   </resultMap>
+    <select id="searchStockRecord" resultType="com.gfx.web.app.stock.dto.StockRecordDto">
+        SELECT
+            so.record_id,
+            so.goods_id,
+            so.goods_number,
+            so.repository_id,
+            so.operator_date,
+            so.remark,
+            so.goods_size,
+            s1.user_name AS operatorName,
+            s2.user_name AS saleManName,
+            c.NAME AS supplierOrCustomerName,
+            d1.NAME AS goodsTypeName,
+            d2.NAME AS goodsQualityName,
+            d3.NAME AS operateTypeName
+        FROM stock_operator so
+            LEFT JOIN USER s1 ON so.operator=s1.user_id
+            LEFT JOIN USER s2 ON so.sale_man = s2.user_id
+            LEFT JOIN customer c ON so.customer_id = c.id
+            LEFT JOIN dir d1 ON so.goods_type = d1.id
+            LEFT JOIN dir d2 ON so.goods_quality = d2.id
+            LEFT JOIN dir d3 ON so.stock_type = d3.id
+        WHERE 1=1
+        <if test="params.goodsType!=null and params.goodsType!=''">
+            and so.goods_type=#{params.goodsType}
+        </if>
+        <if test="params.startDate!=null">
+            and so.operator_date <![CDATA[ >= ]]> #{params.startDate}
+        </if>
+        <if test="params.endDate!=null">
+            and so.operator_date <![CDATA[ <= ]]> #{params.endDate}
+        </if>
+        <if test="params.stockType!=null and params.stockType.size>0">
+            and so.stock_type in
+            <foreach collection="params.stockType" open="(" close=")" separator="," item="item">
+                #{item.id}
+            </foreach>
+        </if>
+        order by so.operator_date desc
+    </select>
 </mapper>

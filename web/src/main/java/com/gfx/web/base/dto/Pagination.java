@@ -1,6 +1,7 @@
 package com.gfx.web.base.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author tony
@@ -17,6 +18,10 @@ public class Pagination implements Serializable {
     private String searchType;
     /**查询关键字*/
     private String keyWord;
+    /**开始时间*/
+    private Date startDate;
+    /**结束时间*/
+    private Date endDate;
 
     public int getLimit() {
         return limit;
@@ -48,5 +53,21 @@ public class Pagination implements Serializable {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

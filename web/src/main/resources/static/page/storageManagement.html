@@ -3,7 +3,7 @@
 <script>
 	var search_type_storage = "none";
 	var search_keyWord = "";
-	var search_repository = "";
+	var search_goodsType = "";
 	var select_goodsID;
 	var select_repositoryID;
 
@@ -12,71 +12,68 @@
 		searchAction();
 		storageListInit();
 		bootstrapValidatorInit();
-		repositoryOptionInit();
+		goodsTypeOptionInit();
 
 		addStorageAction();
 		editStorageAction();
 		deleteStorageAction();
 		importStorageAction();
-		exportStorageAction()
-	})
+		exportStorageAction();
+	});
 
 	// 下拉框選擇動作
 	function optionAction() {
 		$(".dropOption").click(function() {
 			var type = $(this).text();
-			$("#search_input").val("");
-			if (type == "所有") {
+            $("#search_input").val("");
+			if (type === "所有") {
 				$("#search_input_type").attr("readOnly", "true");
 				search_type_storage = "searchAll";
-			} else if (type == "货物ID") {
+			} else if (type === "货物ID") {
 				$("#search_input_type").removeAttr("readOnly");
 				search_type_storage = "searchByGoodsID";
-			} else if (type == "货物名称") {
+			} else if(type === "货物尺寸"){
 				$("#search_input_type").removeAttr("readOnly");
-				search_type_storage = "searchByGoodsName";
-			} else if(type = "货物类型"){
-				$("#search_input_type").removeAttr("readOnly");
-				search_type_storage = "searchByGoodsType";
+				search_type_storage = "searchByGoodsSize";
 			}else {
 				$("#search_input_type").removeAttr("readOnly");
 			}
-
 			$("#search_type").text(type);
+			console.log("search_type_storage ->"+search_type_storage);
 			$("#search_input_type").attr("placeholder", type);
 		})
 	}
 
 	// 仓库下拉框数据初始化
-	function repositoryOptionInit(){
+	function goodsTypeOptionInit(){
 		$.ajax({
 			type : 'GET',
-			url : 'repositoryManage/getRepositoryList',
+			url : 'dir/listDir',
 			dataType : 'json',
 			contentType : 'application/json',
 			data:{
-				searchType : "searchAll",
-				keyWord : "",
-				offset : -1,
-				limit : -1
+				cid:'00'
 			},
 			success : function(response){
-				$.each(response.rows,function(index,elem){
-					$('#search_input_repository').append("<option value='" + elem.id + "'>" + elem.id +"号仓库</option>");
-				})
+			    if(response.result==='success'){
+
+                    $.each(response.data,function(index,elem){
+                        $('#search_input_goodsType').append("<option value='" + elem.id + "'>" + elem.name +"</option>");
+                    });
+                }
 			},
 			error : function(response){
 				// do nothing
 			}
 		});
-		$('#search_input_repository').append("<option value='all'>所有仓库</option>");
+		$('#search_input_goodsType').append("<option value=''>所有类型</option>");
 	}
 
 	// 搜索动作
 	function searchAction() {
 		$('#search_button').click(function() {
 			search_keyWord = $('#search_input_type').val();
-			search_repository = $('#search_input_repository').val();
+			search_goodsType = $('#search_input_goodsType').val();
 			tableRefresh();
 		})
 	}
@@ -87,9 +84,9 @@
 			limit : params.limit,
 			offset : params.offset,
 			searchType : search_type_storage,
-			repositoryBelong : search_repository,
+			goodsType : search_goodsType,
 			keyword : search_keyWord
-		}
+		};
 		return temp;
 	}
 
@@ -100,36 +97,36 @@
 						{
 							columns : [
 									{
-										field : 'goodsID',
-										title : '货物ID'
+										field : 'goodsId',
+										title : '货物型号'
 									//sortable: true
 									},
 									{
-										field : 'goodsName',
-										title : '货物名称'
-									},
-									{
-										field : 'goodsType',
+										field : 'goodsTypeName',
 										title : '货物类型'
 									},
 									{
 										field : 'goodsSize',
-										title : '货物尺寸',
-										visible : false
+										title : '货物尺寸(寸)'
 									},
 									{
-										field : 'goodsValue',
-										title : '货物价值',
-										visible : false
+										field : 'goodsQualityName',
+										title : '货物成色'
+
 									},
 									{
-										field : 'repositoryID',
+										field : 'repositoryId',
 										title : '仓库ID'
 									},
 									{
-										field : 'number',
+										field : 'currentNum',
 										title : '库存数量'
 									},
+                                    {
+                                        field : 'id',
+                                        title : '库存id',
+                                        visible : false
+                                    },
 									{
 										field : 'operation',
 										title : '操作',
@@ -155,7 +152,7 @@
 											}
 										}
 									} ],
-							url : 'storageManage/getStorageListWithRepository',
+							url : 'storage/getStorageList',
 							onLoadError:function(status){
 								handleAjaxError(status);
 							},
@@ -237,9 +234,9 @@
 					}
 
 					var data = {
-						goodsID : $('#storage_goodsID_edit').text(),
-						repositoryID : $('#storage_repositoryID_edit').text(),
-						number : $('#storage_number_edit').val(),
+						goodsId : $('#storage_goodsID_edit').text(),
+						repositoryId : $('#storage_repositoryID_edit').text(),
+						currentNumber : $('#storage_number_edit').val(),
 					}
 
 					// ajax
@@ -458,7 +455,7 @@
 		$('#export_storage_download').click(function(){
 			var data = {
 				searchType : search_type_storage,
-				repositoryBelong : search_repository,
+				goodsType : search_goodsType,
 				keyword : search_keyWord
 			}
 			var url = "storageManage/exportStorageRecord?" + $.param(data)
@@ -521,10 +518,9 @@
 						<span id="search_type">查询方式</span> <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="javascript:void(0)" class="dropOption">货物ID</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">货物名称</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">货物类型</a></li>
-						<li><a href="javascript:void(0)" class="dropOption">所有</a></li>
+                        <li><a href="javascript:void(0)" class="dropOption">所有</a></li>
+                        <li><a href="javascript:void(0)" class="dropOption">商品ID</a></li>
+                        <li><a href="javascript:void(0)" class="dropOption">商品尺寸</a></li>
 					</ul>
 				</div>
 			</div>
@@ -532,10 +528,10 @@
 				<div>
 					<div class="col-md-3 col-sm-3">
 						<input id="search_input_type" type="text" class="form-control"
-							placeholder="货物ID">
+							placeholder="所有">
 					</div>
 					<div class="col-md-3 col-sm-4">
-						<select class="form-control" id="search_input_repository">
+						<select class="form-control" id="search_input_goodsType">
 						</select>
 					</div>
 					<div class="col-md-2 col-sm-2">
