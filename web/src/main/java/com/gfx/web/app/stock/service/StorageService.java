@@ -12,7 +12,7 @@ import java.util.List;
 public interface StorageService {
     /**
      * 库存入库操作
-     * @param stockOperator 出入库操作
+     * @param stockOperator 入库操作
      */
     void addStorage(StockOperator stockOperator);
 
@@ -24,4 +24,10 @@ public interface StorageService {
      * @return
      */
     List<Storage> getStorageAjax(String goodsId, String goodsType, String goodsQuality);
+
+    /**
+     * 出库出库操作
+     * @param stockOut 出库操作
+     */
+    void reduceStorage(StockOperator stockOut);
 }

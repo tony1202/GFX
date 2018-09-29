@@ -13,4 +13,11 @@ public interface StockRecordService {
      * @return 新增结果
      */
     boolean stockIn(StockOperator stockIn);
+
+    /**
+     * 出库操作
+     * @param stockOut 出库信息
+     * @return
+     */
+    boolean stockOut(StockOperator stockOut);
 }

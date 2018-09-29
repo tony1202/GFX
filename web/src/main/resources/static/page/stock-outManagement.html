@@ -9,7 +9,7 @@
 
 	$(function(){
 		//repositorySelectorInit();
-		dataValidateInit();
+		//dataValidateInit();
 		detilInfoToggle();
 		//初始化货物成色选择框
         dirSelectInit("quality_selector","01");
@@ -37,12 +37,12 @@
 							message : '入库数量不能为空'
 						},
 						greaterThan: {
-	                        value: 0,
-	                        message: '入库数量不能小于0'
+	                        value: 1,
+	                        message: '入库数量不能小于1'
 	                    },
                         lessThan:{
 						    value: stockout_number,
-                            message: '出库数量不能大于该库位的库存'
+                            message: '该库位目前最大库存:'+stockout_number
                         }
 					}
 				}
@@ -67,7 +67,7 @@
 					},
 					success : function(data){
                         if(data.result==='error'){
-                            showMsg('error','当前仓库中没有改货物的库存,请重新选择','');
+                            showMsg('error','当前系统中没有该型货物','');
                             return;
                         }
 						var autoCompleteInfo = new Array();
@@ -265,7 +265,9 @@
 		}
 	}
 
-	// 执行货物出库操作
+	/**
+     * 执行货物出库操作
+     */
 	function stockOutOption(){
 		$('#submit').click(function(){
 			// data validate
@@ -400,10 +402,11 @@
                 contentType: 'application/json',
                 data: requestData,
                 success: function (response) {
-                    if (response.result=='success'){
+                    if (response.result==='success'){
                         var storageMsg = '';
                         //清空仓库选项
                         $('#repository_selector').empty();
+                        $('#repository_selector').append('<option value="">请选择出库仓库</option>');
                         $.each(response.data, function (index,elem) {
                             //添加仓库选项
                             $('#repository_selector').append("<option value='" + elem.repositoryId + "'>" + elem.repositoryId +"号仓库</option>");
@@ -413,6 +416,10 @@
                         if (storageMsg){
                             $('#storage_msg').text(storageMsg);
                         }
+                    }else if(response.result==='error'){
+                        $('#repository_selector').empty();
+                        $('#repository_selector').append('<option value="">请选择出库仓库</option>');
+                        showMsg('error','没有改库存,请重选','');
                     }
                 }
             });
@@ -425,13 +432,15 @@
      */
     function checkstockoutNumber(elem) {
         var rId = $(elem).val();
+
         if (rId){
-            if (storageCache.size()>0){
+            if (storageCache.length>0){
                 $.each(storageCache,function (index,item) {
                     if(item.repositoryId==rId){
                         stockout_number = item.currentNum;
                     }
                 })
+                dataValidateInit();
             }
         }
     }
@@ -578,7 +587,7 @@
                         <form action="" class="form-inline">
                             <div class="form-group">
                                 <label for="" class="form-label">出库仓库：</label>
-                                <select name="" id="repository_selector" class="form-control">
+                                <select name="" id="repository_selector" class="form-control" onchange="checkstockoutNumber(this)">
                                     <option value="">请选择出库仓库</option>
                                 </select>
                             </div>
@@ -595,7 +604,7 @@
                         <form action="" class="form-inline">
                             <div class="form-group">
                                 <label for="" class="form-label">出库类型：</label>
-                                <select name="" id="inType_selector" class="form-control" onchange="checkstockoutNumber(this)">
+                                <select name="" id="inType_selector" class="form-control" >
                                     <option value="" >请选择入库类型</option>
                                 </select>
                             </div>

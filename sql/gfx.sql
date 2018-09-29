@@ -5,6 +5,7 @@ cid varchar(4) not null COMMENT '字典分类id',
 NAME VARCHAR(20) NOT NULL COMMENT '字典名',
 cname varchar(50) null comment '分类名称',
 create_date DATE NULL COMMENT '创建时间',
+cname varchar(50) not null comment '分类名称',
 constraint pk_dir_id primary key (id,cid)
 )CHARSET=utf8 COMMENT '字典表';
 
@@ -114,7 +115,8 @@ current_num INT NOT NULL COMMENT '当前库存',
 init_num int not null comment '初始库存',
 repository_id varchar(20) NOT NULL COMMENT '仓库id',
 create_date timestamp NULL COMMENT '创建时间',
-update_date timestamp NULL COMMENT '更新时间'
+update_date timestamp NULL COMMENT '更新时间',
+storage_status varchar(2) not null default '0' comment '库存状态:0:正常;1:该库存数量为0时,进行软删除'
 )CHARSET=utf8 COMMENT '库存表';
 
 -- 出入库表
@@ -250,4 +252,7 @@ insert into dir values ('0302','03','样品出库',null,'出库类型');
 insert into dir values ('0303','03','维修出库',null,'出库类型');
 insert into dir values ('0304','03','外发出库',null,'出库类型');
 insert into dir values ('0305','03','生产出库',null,'出库类型');
+
+-- 2018/9/29
+alter table storage add storage_status varchar(2) not null default '0' comment '库存状态:0:正常;1:该库存数量为0时,进行软删除';
 

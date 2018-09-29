@@ -15,14 +15,23 @@
     <result column="repository_id" jdbcType="VARCHAR" property="repositoryId" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="storage_status" jdbcType="VARCHAR" property="storageStatus" />
   </resultMap>
     <select id="checkExist" resultType="com.gfx.web.common.entity.Storage">
       SELECT id,goods_id,goods_type,current_num,init_num,repository_id from storage
-        WHERE goods_id=#{goodsId}
+        WHERE storage_status = '0'
+              AND goods_id=#{goodsId}
               and goods_quality=#{goodsQuality}
               and goods_type = #{goodsType}
     </select>
     <select id="getStorageAjax" resultType="com.gfx.web.common.entity.Storage">
-        SELECT current_num,repository_id FROM storage WHERE goods_id = #{goodsId} and goods_type=#{goodsType} and goods_quality=#{goodsQuality}
+        SELECT id,current_num,repository_id FROM storage
+        WHERE storage_status = '0'
+              AND goods_id = #{goodsId}
+              and goods_type=#{goodsType}
+              and goods_quality=#{goodsQuality}
+        <if test="repositoryId!=null and repositoryId!=''">
+            and repository_id=#{repositoryId}
+        </if>
     </select>
 </mapper>

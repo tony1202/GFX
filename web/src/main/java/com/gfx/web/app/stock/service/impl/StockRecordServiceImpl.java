@@ -47,4 +47,19 @@ public class StockRecordServiceImpl implements StockRecordService{
             return false;
         }
     }
+
+    /**
+     * 出库操作
+     *
+     * @param stockOut 出库信息
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean stockOut(StockOperator stockOut) {
+        //更新库存
+        storageService.reduceStorage(stockOut);
+        int insert = stockOperatorMapper.insertSelective(stockOut);
+        return insert==1;
+    }
 }

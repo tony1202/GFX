@@ -66,6 +66,13 @@ public class Storage {
     private Date updateDate;
 
     /**
+     * 库存状态
+     */
+    @Column(name = "storage_status")
+    private String storageStatus;
+
+
+    /**
      * 获取库存主键
      *
      * @return id - 库存主键
@@ -243,5 +250,23 @@ public class Storage {
      */
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    /**
+     * 获取库存状态
+     *
+     * @return storageStatus 库存状态
+     */
+    public String getStorageStatus() {
+        return storageStatus;
+    }
+
+    /**
+     * 设置库存状态
+     *
+     * @return storageStatus 库存状态
+     */
+    public void setStorageStatus(String storageStatus) {
+        this.storageStatus = storageStatus;
     }
 }

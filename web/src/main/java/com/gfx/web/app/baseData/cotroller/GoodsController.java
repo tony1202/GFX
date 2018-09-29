@@ -113,9 +113,9 @@ public class GoodsController {
     public Map<String,Object> getGoodsListAjax(@RequestParam("goodsId")String goodsId,@RequestParam("goodsType")String goodsType){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
-        if (StringUtils.isNoneBlank(goodsId,goodsType)){
+        if (StringUtils.isNotBlank(goodsType)){
             //货物id支持模糊查询,不区分大小写
-            List<GoodsDto> list = goodsService.getGoodsListAjax(goodsId.toUpperCase(),goodsType);
+            List<GoodsDto> list = goodsService.getGoodsListAjax(goodsId,goodsType);
             if (list.size()>0){
                 vmsResponse.setResponseBodyTotal((long)list.size());
                 vmsResponse.setCustomerInfo("rows",list);

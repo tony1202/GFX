@@ -112,7 +112,10 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public List<GoodsDto> getGoodsListAjax(String goodsId, String goodsType) {
-
+        if (goodsId!=null){
+            //转大写
+            goodsId = goodsId.toUpperCase();
+        }
         return goodsMapper.getGoodsListAjax(goodsId,goodsType);
     }
 }

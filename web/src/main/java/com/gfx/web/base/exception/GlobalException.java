@@ -1,4 +1,4 @@
-package com.gfx.web.base.exception.global;
+package com.gfx.web.base.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
