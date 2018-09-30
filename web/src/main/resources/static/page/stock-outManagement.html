@@ -294,7 +294,7 @@
 			    return;
             }
             if(stockData.stockType==='0205'&&(!stockData.customerId||!stockData.saleMan)){
-                showMsg('error', '销售出库,请选择客户和相关业务员', '');
+                showMsg('error', '出库信息不完整', '(销售出库,请选择客户和相关业务员)');
                 return;
             }
 			$.ajax({
@@ -419,7 +419,7 @@
                     }else if(response.result==='error'){
                         $('#repository_selector').empty();
                         $('#repository_selector').append('<option value="">请选择出库仓库</option>');
-                        showMsg('error','没有改库存,请重选','');
+                        showMsg('error','无库存,请检查!','');
                     }
                 }
             });

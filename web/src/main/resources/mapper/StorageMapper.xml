@@ -49,7 +49,7 @@
             LEFT JOIN dir d2 ON s.goods_quality = d2.id
         WHERE s.storage_status = '0'
         <if test="params.goodsType!=null and params.goodsType!=''">
-            AND s.goods_type = #{params.goodType}
+            AND s.goods_type = #{params.goodsType}
         </if>
         <if test="params.goodsId!=null and params.goodsId!=''">
             and s.goods_id like concat("%",#{params.goodsId},"%")
@@ -57,5 +57,6 @@
         <if test="params.goodsSize!=null and params.goodsSize!=''">
             and s.goods_size like concat("%",#{params.goodsSize},"%")
         </if>
+        order by s.goods_id,s.goods_quality
     </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.gfx.web.app.stock.dto.StorageDto;
 import com.gfx.web.app.stock.dto.StoragePagination;
 import com.gfx.web.app.stock.service.StorageService;
 import com.gfx.web.base.exception.StorageException;
+import com.gfx.web.base.util.EJConvertor;
 import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.dao.mapper.StorageMapper;
 import com.gfx.web.common.entity.StockOperator;
@@ -18,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +50,13 @@ public class StorageServiceImpl implements StorageService {
         Storage storageOld = checkExist(stockOperator.getGoodsId(), stockOperator.getGoodsQuality(), stockOperator.getGoodsType());
         //如果存在相应的存储,并且库位一致
         if (storageOld != null && StringUtils.equalsIgnoreCase(stockOperator.getRepositoryId(), storageOld.getRepositoryId())) {
+            //修改当前库存数量
             storageOld.setCurrentNum(stockOperator.getGoodsNumber() + storageOld.getCurrentNum());
             //如果本次入库采购
-            storageOld.setInitNum(stockOperator.getGoodsNumber() + storageOld.getInitNum());
+            if (StringUtils.equals(stockOperator.getStockType(),CommonConstant.StockInType.PURCHASE)){
+                //修改货物的初始库存数量
+                storageOld.setInitNum(stockOperator.getGoodsNumber() + storageOld.getInitNum());
+            }
             storageOld.setUpdateDate(new Date());
             storageMapper.updateByPrimaryKeySelective(storageOld);
         } else {
@@ -134,11 +140,55 @@ public class StorageServiceImpl implements StorageService {
             default:
                 break;
         }
-        Page<Object> page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        Page<Object> page = null;
+        if (pagination.getOffset() >= 0 && pagination.getLimit() >= 0) {
+
+            page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        }
         List<StorageDto> list = storageMapper.getStorageList(params);
-        result.put("total",page.getTotal());
-        result.put("data",list);
+        if (page!=null){
+            result.put("total", page.getTotal());
+        }
+        result.put("data", list);
         return result;
+    }
+
+    /**
+     * 导出Excel
+     *
+     * @param pagination      导出数据条件
+     * @param storageDtoClass 数据源
+     * @return 文件
+     */
+    @Override
+    public File exportStorageRecord(StoragePagination pagination, Class<StorageDto> storageDtoClass) {
+        Map<String, Object> storageMap = getStorageList(pagination);
+        List<StorageDto> storageList = (List<StorageDto>) storageMap.get("data");
+        EJConvertor ejConvertor = new EJConvertor();
+        return ejConvertor.excelWriter(storageDtoClass, storageList);
+    }
+
+    /**
+     * 跟新库存
+     *
+     * @param storage 库存信息
+     * @return
+     */
+    @Override
+    public boolean updateStorage(Storage storage) {
+        return storageMapper.updateByPrimaryKeySelective(storage)==1;
+    }
+
+
+    /**
+     * 删除库存
+     *
+     * @param storageId 库存id
+     * @return
+     */
+    @Override
+    public boolean deleteStorage(String storageId) {
+        return storageMapper.deleteByPrimaryKey(storageId)==1;
     }
 
     /**

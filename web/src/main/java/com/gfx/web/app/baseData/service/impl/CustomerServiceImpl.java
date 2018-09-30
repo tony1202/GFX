@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
                 break;
         }
         Page<Customer> page = null;
-        if (pagination.getOffset() >= 0 || pagination.getLimit() >= 0) {
+        if (pagination.getOffset() >= 0 && pagination.getLimit() >= 0) {
             page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
         }
         List<Customer> list = customerMapper.getCustomerList(params);

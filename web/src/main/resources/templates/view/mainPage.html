@@ -26,7 +26,7 @@
         <div class="container-fluid">
             <!-- 导航栏标题 -->
             <div class="navbar-header">
-                <a href="javascript:void(0)" class="navbar-brand home">仓库管理系统</a>
+                <a href="javascript:void(0)" class="navbar-brand home">仓库管理系统 - 冠飞信科技有限公司</a>
             </div>
 
             <!-- 导航栏下拉菜单；用户信息与注销登陆 -->
@@ -78,13 +78,13 @@
                     <div id="collapse1" class="panel-collapse collapse collapseBody">
                         <div class="panel-body">
                             <ul class="list-group">
-                                <@shiro.hasRole name="commonsAdmin">
-                                    <li class="list-group-item">
-                                        <a href="javascript:void(0)"  class="menu_item"
-                                           name="page/storageManagementCommon.html">库存查询</a>
-                                    </li>
-                                </@shiro.hasRole>
-                                <@shiro.hasRole name="systemAdmin">
+                                <!--<@shiro.hasRole name="commonsAdmin">-->
+                                    <!--<li class="list-group-item">-->
+                                        <!--<a href="javascript:void(0)"  class="menu_item"-->
+                                           <!--name="page/storageManagementCommon.html">库存查询</a>-->
+                                    <!--</li>-->
+                                <!--</@shiro.hasRole>-->
+                                <!--<@shiro.hasRole name="systemAdmin">-->
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/storageManagement.html">库存查询</a>
@@ -94,7 +94,7 @@
                                            class="menu_item"
                                            name="page/stockRecordManagement.html">出入库记录</a>
                                     </li>
-                                </@shiro.hasRole>
+                                <!--</@shiro.hasRole>-->
                             </ul>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                     </div>
                     <div id="collapse2" class="panel-collapse collapse collapseBody in">
                         <div class="panel-body">
-                            <@shiro.hasRole name="systemAdmin">
+                            <!--<@shiro.hasRole name="systemAdmin">-->
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
@@ -122,19 +122,19 @@
                                            name="page/stock-outManagement.html">货物出库</a>
                                     </li>
                                 </ul>
-                            </@shiro.hasRole>
-                            <@shiro.hasRole name="commonsAdmin">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <a href="javascript:void(0)"  class="menu_item"
-                                           name="page/stock-inManagementCommon.html">货物入库</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a href="javascript:void(0)"  class="menu_item"
-                                           name="page/stock-outManagementCommon.html">货物出库</a>
-                                    </li>
-                                </ul>
-                            </@shiro.hasRole>
+                            <!--</@shiro.hasRole>-->
+                            <!--<@shiro.hasRole name="commonsAdmin">-->
+                                <!--<ul class="list-group">-->
+                                    <!--<li class="list-group-item">-->
+                                        <!--<a href="javascript:void(0)"  class="menu_item"-->
+                                           <!--name="page/stock-inManagementCommon.html">货物入库</a>-->
+                                    <!--</li>-->
+                                    <!--<li class="list-group-item">-->
+                                        <!--<a href="javascript:void(0)"  class="menu_item"-->
+                                           <!--name="page/stock-outManagementCommon.html">货物出库</a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</@shiro.hasRole>-->
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a href="#collapse3" data-toggle="collapse" data-parent="#accordion"
-                                   class="parentMenuTitle collapseHead">人员管理</a>
+                                   class="parentMenuTitle collapseHead">人事管理</a>
                                 <div class="pull-right	">
                                     <span class="caret"></span>
                                 </div>
@@ -154,7 +154,7 @@
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
-                                           name="page/repositoryAdminManagement.html">仓库管理员管理</a>
+                                           name="page/personalAdminManagement.html">员工管理</a>
                                     </li>
                                 </ul>
                             </div>

@@ -38,6 +38,7 @@
         <shiro.tag.version>0.1</shiro.tag.version>
         <ehcache.version>2.10.5</ehcache.version>
         <UUID.version>3.1.5</UUID.version>
+        <poi.version>4.0.0</poi.version>
     </properties>
 
 
@@ -137,6 +138,32 @@
                 <artifactId>java-uuid-generator</artifactId>
                 <version>${UUID.version}</version>
             </dependency>
+
+            <!--poi配置 -start-->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-scratchpad</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+
+            <!--poi配置 -end-->
+
+
         </dependencies>
     </dependencyManagement>
 

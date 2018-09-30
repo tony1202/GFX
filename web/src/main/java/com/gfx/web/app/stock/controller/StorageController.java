@@ -5,17 +5,19 @@ import com.gfx.web.app.stock.dto.StoragePagination;
 import com.gfx.web.app.stock.service.StorageService;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
+import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.Storage;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +74,65 @@ public class StorageController {
             vmsResponse.setResponseBodyTotal((Long) map.get("total"));
             vmsResponse.setCustomerInfo("rows",(List<StorageDto>)map.get("data"));
             vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+        }
+        return vmsResponse.generateResponseBody();
+    }
+
+    /**
+     * 库存导出
+     */
+    @GetMapping("/exportStorageRecord")
+    public void exportStorageRecord(StoragePagination pagination, HttpServletResponse response) throws IOException {
+        String fileName = UUIDUtils.timeUUID()+".xlsx";
+        File file = null;
+        FileInputStream in = null;
+        try {
+            file = storageService.exportStorageRecord(pagination,StorageDto.class);
+             in = new FileInputStream(file);
+            response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+            FileCopyUtils.copy(in,response.getOutputStream());
+        } catch (Exception e) {
+            log.warn("export is error ->",e);
+        } finally {
+            if (file!=null && file.exists()){
+                file.delete();
+            }
+            if (in!=null){
+                in.close();
+            }
+        }
+    }
+
+    /**
+     * 跟新库存
+     * @param storage 库存信息
+     * @return
+     */
+    @PostMapping("/updateStorage")
+    public Map<String,Object> updateStorage(@RequestBody Storage storage){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        boolean res =  storageService.updateStorage(storage);
+        if (res){
+            vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+        }
+        return vmsResponse.generateResponseBody();
+    }
+
+    /**
+     * 删除库存记录
+     * @param storageId 库存id
+     * @return
+     */
+    @DeleteMapping("/deleteStorage/{storageId}")
+    public Map<String,Object> deleteStorage(@PathVariable String storageId){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        if (StringUtils.isNotBlank(storageId)){
+            boolean res = storageService.deleteStorage(storageId);
+            if (res){
+                vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+            }
         }
         return vmsResponse.generateResponseBody();
     }
