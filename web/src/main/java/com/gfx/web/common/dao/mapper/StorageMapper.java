@@ -17,7 +17,7 @@ public interface StorageMapper extends Mapper<Storage> {
      * @param goodsQuality 成色
      * @return
      */
-    List<Storage> checkExist(@Param("goodsId") String goodsId, @Param("goodsQuality") String goodsQuality,@Param("goodsType")String goodsType);
+    List<Storage> checkExist(@Param("goodsId") String goodsId, @Param("goodsQuality") String goodsQuality,@Param("goodsType")String goodsType,@Param("repositoryId")String repositoryId);
 
     List<Storage> getStorageAjax(@Param("goodsId") String goodsId, @Param("goodsType") String goodsType, @Param("goodsQuality") String goodsQuality,@Param("repositoryId")String repositoryId);
 

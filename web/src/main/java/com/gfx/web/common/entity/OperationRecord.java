@@ -26,20 +26,20 @@ public class OperationRecord {
     /**
      * 操作名称
      */
-    @Column(name = "operator_name")
-    private String operatorName;
+    @Column(name = "operation_name")
+    private String operationName;
 
     /**
      * 操作结果
      */
-    @Column(name = "operator_result")
-    private String operatorResult;
+    @Column(name = "operation_result")
+    private String operationResult;
 
     /**
      * 操作时间
      */
-    @Column(name = "operator_date")
-    private Date operatorDate;
+    @Column(name = "operation_date")
+    private Date operationDate;
 
     /**
      * 获取主键
@@ -100,52 +100,52 @@ public class OperationRecord {
      *
      * @return operator_name - 操作名称
      */
-    public String getOperatorName() {
-        return operatorName;
+    public String getOperationName() {
+        return operationName;
     }
 
     /**
      * 设置操作名称
      *
-     * @param operatorName 操作名称
+     * @param operationName 操作名称
      */
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName == null ? null : operatorName.trim();
+    public void setOperationName(String operationName) {
+        this.operationName = operationName == null ? null : operationName.trim();
     }
 
     /**
      * 获取操作结果
      *
-     * @return operator_result - 操作结果
+     * @return operation_result - 操作结果
      */
-    public String getOperatorResult() {
-        return operatorResult;
+    public String getOperationResult() {
+        return operationResult;
     }
 
     /**
      * 设置操作结果
      *
-     * @param operatorResult 操作结果
+     * @param operationResult 操作结果
      */
-    public void setOperatorResult(String operatorResult) {
-        this.operatorResult = operatorResult == null ? null : operatorResult.trim();
+    public void setOperationResult(String operationResult) {
+        this.operationResult = operationResult == null ? null : operationResult.trim();
     }
 
     /**
      * 获取操作时间
      *
-     * @return operator_date - 操作时间
+     * @return operation_date - 操作时间
      */
-    public Date getOperatorDate() {
-        return operatorDate;
+    public Date getOperationDate() {
+        return operationDate;
     }
 
     /**
      * 设置操作时间
      *
-     * @param operatorDate 操作时间
+     * @param operationDate 操作时间
      */
-    public void setOperatorDate(Date operatorDate) {
-        this.operatorDate = operatorDate;
+    public void setOperationDate(Date operationDate) {
+        this.operationDate = operationDate;
     }
 }

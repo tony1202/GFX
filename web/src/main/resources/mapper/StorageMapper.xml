@@ -23,6 +23,7 @@
               AND goods_id=#{goodsId}
               and goods_quality=#{goodsQuality}
               and goods_type = #{goodsType}
+              and repository_id = #{repositoryId}
     </select>
     <select id="getStorageAjax" resultType="com.gfx.web.common.entity.Storage">
         SELECT id,current_num,repository_id FROM storage

@@ -62,9 +62,9 @@ public class UserOperationLogging {
             OperationRecord operationRecord = new OperationRecord();
             operationRecord.setUserId(userInfo.getUserId());
             operationRecord.setUserName(userInfo.getUserName());
-            operationRecord.setOperatorName(operationName);
-            operationRecord.setOperatorResult(operationResult);
-            operationRecord.setOperatorDate(new Date());
+            operationRecord.setOperationName(operationName);
+            operationRecord.setOperationResult(operationResult);
+            operationRecord.setOperationDate(new Date());
 
             userOperationService.addOperationRecord(operationRecord);
         }

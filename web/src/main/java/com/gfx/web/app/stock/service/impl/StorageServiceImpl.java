@@ -47,9 +47,9 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void addStorage(StockOperator stockOperator) {
         //检查是否已经存响应的库存记录
-        Storage storageOld = checkExist(stockOperator.getGoodsId(), stockOperator.getGoodsQuality(), stockOperator.getGoodsType());
+        Storage storageOld = checkExist(stockOperator.getGoodsId(), stockOperator.getGoodsQuality(), stockOperator.getGoodsType(),stockOperator.getRepositoryId());
         //如果存在相应的存储,并且库位一致
-        if (storageOld != null && StringUtils.equalsIgnoreCase(stockOperator.getRepositoryId(), storageOld.getRepositoryId())) {
+        if (storageOld != null) {
             //修改当前库存数量
             storageOld.setCurrentNum(stockOperator.getGoodsNumber() + storageOld.getCurrentNum());
             //如果本次入库采购
@@ -197,10 +197,11 @@ public class StorageServiceImpl implements StorageService {
      * @param goodsId      货物id
      * @param goodsQuality 货物成色
      * @param goodsType    货物类型
+     * @param repositoryId 仓库id
      * @return
      */
-    private Storage checkExist(String goodsId, String goodsQuality, String goodsType) {
-        List<Storage> storages = storageMapper.checkExist(goodsId, goodsQuality, goodsType);
+    private Storage checkExist(String goodsId, String goodsQuality, String goodsType,String repositoryId) {
+        List<Storage> storages = storageMapper.checkExist(goodsId, goodsQuality, goodsType,repositoryId);
         if (storages.size() > 0) {
             return storages.get(0);
         }

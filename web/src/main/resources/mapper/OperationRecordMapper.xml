@@ -8,20 +8,21 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="operator_result" jdbcType="VARCHAR" property="operatorResult" />
-    <result column="operator_date" jdbcType="TIMESTAMP" property="operatorDate" />
+    <result column="operation_name" jdbcType="VARCHAR" property="operationName" />
+    <result column="operation_result" jdbcType="VARCHAR" property="operationResult" />
+    <result column="operation_date" jdbcType="TIMESTAMP" property="operationDate" />
   </resultMap>
     <select id="getUserOperationRecords" resultType="com.gfx.web.common.entity.OperationRecord">
-      SELECT id,user_id,user_name,operator_date,operator_result,operator_name FROM operation_record WHERE 1=1
+      SELECT id,user_id,user_name,operation_date,operation_result,operation_name FROM operation_record WHERE 1=1
         <if test="params.userName!=null">
-            AND user_name LIKE concat("%",#{params.user_name},"%")
+            AND user_name LIKE concat("%",#{params.userName},"%")
         </if>
         <if test="params.startDate!=null">
-            and operator_date <![CDATA[>=]]> #{params.startDate}
+            and operation_date <![CDATA[>=]]> #{params.startDate}
         </if>
         <if test="params.endDate!=null">
-            and operator_date <![CDATA[<=]]> #{params.endDate}
+            and operation_date <![CDATA[<=]]> #{params.endDate}
         </if>
+        order by operation_date desc
     </select>
 </mapper>
