@@ -69,7 +69,7 @@ public class SessionListener extends SessionListenerAdapter {
         if (userInfo != null) {
             //记录登出日志
             try {
-                systemLogService.addAccessRecord(userInfo.getUserId(),userInfo.getIp(),SystemLogService.ACCESS_TYPE_LOGOUT);
+                systemLogService.addAccessRecord(userInfo.getUserId(),userInfo.getUserName(),userInfo.getIp(),SystemLogService.ACCESS_TYPE_LOGOUT);
             } catch (Exception e) {
                 log.warn("system logout error ->",e);
             }

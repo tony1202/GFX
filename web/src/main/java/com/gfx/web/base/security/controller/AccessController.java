@@ -81,7 +81,7 @@ public class AccessController {
                 result = VMSResponse.RESPONSE_RESULT_SUCCESS;
 
                 //记录登录日志
-                systemLogService.addAccessRecord(userInfo.getUserId(),userInfo.getIp(),SystemLogService.ACCESS_TYPE_LOGIN);
+                systemLogService.addAccessRecord(userInfo.getUserId(),userInfo.getUserName(),userInfo.getIp(),SystemLogService.ACCESS_TYPE_LOGIN);
 
             } catch (AuthenticationException e) {
                 log.warn("authentication error ->{}",e.getMessage());

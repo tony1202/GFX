@@ -2,10 +2,10 @@
 
 <script>
     // 查询参数
-    search_access_type = 'all'
-    search_user_id = null
-    search_start_date = null
-    search_end_date = null
+    search_access_type = 'all';
+    search_user_name = null;
+    search_start_date = null;
+    search_end_date = null;
 
     $(function(){
         datePickerInit();
@@ -16,7 +16,7 @@
     // 日期选择器初始化
 	function datePickerInit(){
 		$('.form_date').datetimepicker({
-			format:'yyyy-mm-dd',
+			format:'yyyy-mm-dd 00:00:00',
 			language : 'zh-CN',
 			endDate : new Date(),
 			weekStart : 1,
@@ -36,20 +36,27 @@
 	            field : 'id',
 	            title : '记录ID'
 	        },{
-	            field : 'userID',
+	            field : 'userId',
 	            title : '用户ID'
 	        },{
 	            field : 'userName',
 	            title : '用户名'
 	        },{
-	            field : 'accessTime',
+	            field : 'accessDate',
 	            title : '时间'
 	        },{
-	            field : 'accessIP',
+	            field : 'accessIp',
 	            title : 'IP'
 	        },{
 	            field : 'accessType',
-	            title : '类型'
+	            title : '类型',
+                formatter : function (value, row, index) {
+                    if (value === "login"){
+                        return "登录";
+                    } else if (value === "logout"){
+                        return "登出";
+                    }
+                }
 	        }],
 	        url : 'systemLog/getAccessRecords',
             onLoadError:function(status){
@@ -79,7 +86,7 @@
 		var temp = {
 			limit : params.limit,
 			offset : params.offset,
-			userID : search_user_id,
+			userName : search_user_name,
 			accessType : search_access_type,
 			startDate : search_start_date,
 			endDate : search_end_date
@@ -90,7 +97,7 @@
     // 查询操作
     function searchActionInit(){
         $('#search_button').click(function(){
-            search_user_id = $('#user_id').val();
+            search_user_name = $('#user_name').val();
             search_access_type = $('#access_type').val();
             search_start_date = $('#start_date').val();
             search_end_date = $('#end_date').val();
@@ -108,8 +115,8 @@
             <div class="col-md-3">
                 <form action="" class="form-inline">
                     <div class="form-group">
-                        <label class="form-label">用户ID：</label>
-                        <input type="text" id="user_id" class="form-control" placeholder="指定用户ID" style="width:50%">
+                        <label class="form-label">用户名：</label>
+                        <input type="text" id="user_name" class="form-control" placeholder="指定用户名" style="width:50%">
                     </div>
                 </form>
             </div>
@@ -118,8 +125,8 @@
                     <label class="form-label">记录过滤：</label>
                     <select name="" id="access_type" class="form-control">
                         <option value="all">显示所有</option>
-                        <option value="loginOnly">仅显示登入记录</option>
-                        <option value="logoutOnly">仅显示登出记录</option>
+                        <option value="login">仅显示登入记录</option>
+                        <option value="logout">仅显示登出记录</option>
                     </select>
                 </form>
             </div>

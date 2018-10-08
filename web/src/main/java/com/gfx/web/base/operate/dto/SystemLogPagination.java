@@ -8,6 +8,8 @@ import com.gfx.web.base.dto.Pagination;
  */
 public class SystemLogPagination extends Pagination {
     private String userName;
+    private String accessType;
+
 
     public String getUserName() {
         return userName;
@@ -15,5 +17,13 @@ public class SystemLogPagination extends Pagination {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public void setAccessType(String accessType) {
+        this.accessType = accessType;
     }
 }

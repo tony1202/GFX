@@ -60,6 +60,7 @@ CREATE TABLE user_role(
  CREATE TABLE access_record(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT 'id',
     user_id VARCHAR(50) NOT NULL COMMENT '登录用户id',
+    user_name VARCHAR(50) not null COMMENT '用户名',
     access_type VARCHAR(20) NOT NULL COMMENT '登录类型:登入或登出',
     access_ip VARCHAR(50) COMMENT '用户访问ip',
     access_date timestamp COMMENT '访问时间'
@@ -260,4 +261,5 @@ alter table storage add storage_status varchar(2) not null default '0' comment '
 
 -- 2018/10/08
 ALTER TABLE access_record MODIFY COLUMN access_date TIMESTAMP;
-
+-- 2018/10/09
+ALTER TABLE access_record ADD COLUMN user_name VARCHAR(50) COMMENT '用户名';

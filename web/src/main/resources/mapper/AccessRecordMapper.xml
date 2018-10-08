@@ -7,8 +7,25 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="access_type" jdbcType="VARCHAR" property="accessType" />
     <result column="access_ip" jdbcType="VARCHAR" property="accessIp" />
     <result column="access_date" jdbcType="TIMESTAMP" property="accessDate" />
   </resultMap>
+    <select id="getAccessRecords" resultType="com.gfx.web.common.entity.AccessRecord">
+      select id,user_id,user_name,access_type,access_ip,access_date from access_record where 1=1
+        <if test="params.userName!=null">
+            and user_name like concat("%",#{params.userName},"%")
+        </if>
+        <if test="params.accessType!=null">
+            and access_type = #{params.accessType}
+        </if>
+        <if test="params.startDate!=null">
+            and access_date <![CDATA[>=]]> #{params.startDate}
+        </if>
+        <if test="params.endDate!=null">
+            and access_date <![CDATA[<=]]> #{params.endDate}
+        </if>
+        order by access_date desc
+    </select>
 </mapper>

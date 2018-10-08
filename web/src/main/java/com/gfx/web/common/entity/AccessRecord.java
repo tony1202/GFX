@@ -24,6 +24,12 @@ public class AccessRecord {
     private String accessType;
 
     /**
+     * 用户名
+     */
+    @Column(name = "user_name")
+    private String userName;
+
+    /**
      * 用户访问ip
      */
     @Column(name = "access_ip")
@@ -123,5 +129,13 @@ public class AccessRecord {
      */
     public void setAccessDate(Date accessDate) {
         this.accessDate = accessDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
