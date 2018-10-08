@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!--指定对应表-->
-        <table schema="" tableName="stock_operator"/>
+        <table schema="" tableName="operation_record"/>
         <!--<table schema="" tableName="dir"/>-->
         <!--<table schema="" tableName="repository"/>-->
         <!--<table schema="" tableName="stock_in"/>-->

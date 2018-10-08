@@ -2,11 +2,14 @@ package com.gfx.web.base.security.controller;
 
 import com.gfx.web.base.constant.VMSConstant;
 import com.gfx.web.base.context.UserContextHolder;
+import com.gfx.web.base.dto.AccessDto;
 import com.gfx.web.base.dto.UserInfoDto;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
+import com.gfx.web.base.operate.UserOperation;
 import com.gfx.web.base.service.SystemLogService;
 import com.gfx.web.base.util.CaptchaGenerator;
+import com.gfx.web.base.util.MD5Util;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -161,6 +164,31 @@ public class AccessController {
 
         }
 
+    }
 
+    @GetMapping("/getUserId")
+    public Map<String,Object> getUserId(){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        if (StringUtils.isNotBlank(UserContextHolder.getUserInfo().getUserId())){
+            vmsResponse.setResponseBodyData(UserContextHolder.getUserInfo().getUserId());
+            vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+        }
+        return vmsResponse.generateResponseBody();
+    }
+
+    @PutMapping("/passwordModify")
+    public Map<String,Object> passwordModify(@RequestBody AccessDto accessDto){
+        VMSResponse vmsResponse = VMSResponseFactory.newInstance();
+        vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
+        if (StringUtils.isNoneBlank(accessDto.getNewPassWord(),accessDto.getNewPassWord(),accessDto.getRePassWord())){
+            String res = systemLogService.passwordModify(accessDto);
+            if (StringUtils.equals("ok",res)){
+                vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_SUCCESS);
+            }else {
+                vmsResponse.setResponseBodyMsg(res);
+            }
+        }
+        return vmsResponse.generateResponseBody();
     }
 }

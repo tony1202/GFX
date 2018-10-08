@@ -39,14 +39,14 @@ public class ShiroConfig {
      * @return
      */
     @Bean(name = "securityManager")
-    public DefaultWebSecurityManager securityManager(UserAuthorizingRealm realm){
+    public DefaultWebSecurityManager securityManager(UserAuthorizingRealm realm,DefaultWebSessionManager sessionManager){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //开启shiro的ehcache缓存管理
         securityManager.setCacheManager(cacheManager());
         //配置realm
         securityManager.setRealm(realm);
         //配置sessionManager
-        securityManager.setSessionManager(sessionManager());
+        securityManager.setSessionManager(sessionManager);
         return securityManager;
     }
 
@@ -55,7 +55,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager,DefaultWebSessionManager sessionManager){
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         //配置安全管理器
         shiroFilter.setSecurityManager(securityManager);
@@ -64,7 +64,7 @@ public class ShiroConfig {
         //配置并发登录人数控制
         KickOutSessionControlFilter kickOutSessionControlFilter = new KickOutSessionControlFilter();
         kickOutSessionControlFilter.setCache(cacheManager());
-        kickOutSessionControlFilter.setSessionManager(sessionManager());
+        kickOutSessionControlFilter.setSessionManager(sessionManager);
         //同一账号登录踢出前面登录的
         kickOutSessionControlFilter.setKickOutAfter(false);
         //同一账号最多可登录的人数
@@ -139,7 +139,7 @@ public class ShiroConfig {
      * @return DefaultWebSessionManager
      */
     @Bean(name = "sessionManager")
-    public DefaultWebSessionManager sessionManager(){
+    public DefaultWebSessionManager sessionManager(com.gfx.web.base.security.listener.SessionListener sessionListener){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         //配置session持久化
         sessionManager.setSessionDAO(sessionDAO());
@@ -166,7 +166,7 @@ public class ShiroConfig {
 
         //配置session监听器
         List<SessionListener> sessionListeners = new ArrayList<>();
-        sessionListeners.add(new com.gfx.web.base.security.listener.SessionListener());
+        sessionListeners.add(sessionListener);
         sessionManager.setSessionListeners(sessionListeners);
 
         //配置session缓存管理

@@ -4,6 +4,7 @@ import com.gfx.web.app.baseData.dto.GoodsDto;
 import com.gfx.web.app.baseData.service.GoodsService;
 import com.gfx.web.app.constant.CommonConstant;
 import com.gfx.web.base.dto.Pagination;
+import com.gfx.web.base.operate.UserOperation;
 import com.gfx.web.common.dao.mapper.GoodsMapper;
 import com.gfx.web.common.entity.Goods;
 import com.github.pagehelper.Page;
@@ -37,6 +38,7 @@ public class GoodsServiceImpl implements GoodsService {
      * @param goods 货物
      */
     @Override
+    @UserOperation(value = "新增货物")
     public String addGoods(Goods goods) {
         String result = "no";
         if (goods != null) {

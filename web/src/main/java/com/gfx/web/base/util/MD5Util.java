@@ -35,4 +35,13 @@ public class MD5Util {
         }
         return "";
     }
+
+    /**
+     * md5解密
+     * @param str
+     * @return
+     */
+    public static String decodeMD5(String str){
+        return null;
+    }
 }

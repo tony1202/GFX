@@ -9,6 +9,6 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="access_type" jdbcType="VARCHAR" property="accessType" />
     <result column="access_ip" jdbcType="VARCHAR" property="accessIp" />
-    <result column="access_date" jdbcType="DATE" property="accessDate" />
+    <result column="access_date" jdbcType="TIMESTAMP" property="accessDate" />
   </resultMap>
 </mapper>

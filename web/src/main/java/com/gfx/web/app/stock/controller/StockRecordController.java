@@ -8,6 +8,7 @@ import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.base.dto.VMSResponse;
 import com.gfx.web.base.dto.VMSResponseFactory;
 import com.gfx.web.base.exception.StorageException;
+import com.gfx.web.base.operate.UserOperation;
 import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.StockOperator;
 import org.apache.commons.collections.MapUtils;

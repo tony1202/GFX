@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gfx.web.common.dao.mapper.OperationRecordMapper">
+  <resultMap id="BaseResultMap" type="com.gfx.web.common.entity.OperationRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
+    <result column="operator_result" jdbcType="VARCHAR" property="operatorResult" />
+    <result column="operator_date" jdbcType="TIMESTAMP" property="operatorDate" />
+  </resultMap>
+    <select id="getUserOperationRecords" resultType="com.gfx.web.common.entity.OperationRecord">
+      SELECT id,user_id,user_name,operator_date,operator_result,operator_name FROM operation_record WHERE 1=1
+        <if test="params.userName!=null">
+            AND user_name LIKE concat("%",#{params.user_name},"%")
+        </if>
+        <if test="params.startDate!=null">
+            and operator_date <![CDATA[>=]]> #{params.startDate}
+        </if>
+        <if test="params.endDate!=null">
+            and operator_date <![CDATA[<=]]> #{params.endDate}
+        </if>
+    </select>
+</mapper>

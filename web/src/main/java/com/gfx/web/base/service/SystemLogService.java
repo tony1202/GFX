@@ -1,6 +1,6 @@
 package com.gfx.web.base.service;
 
-/**
+import com.gfx.web.base.dto.AccessDto; /**
  * @author tony
  * @date 2018/9/6
  * @Description: 系统操作记录
@@ -19,4 +19,10 @@ public interface SystemLogService {
      */
     void addAccessRecord(String userId, String accessIp, String accessType);
 
+    /**
+     * 密码修改
+     * @param accessDto
+     * @return
+     */
+    String passwordModify(AccessDto accessDto);
 }

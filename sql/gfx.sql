@@ -61,16 +61,17 @@ CREATE TABLE user_role(
     user_id VARCHAR(50) NOT NULL COMMENT '登录用户id',
     access_type VARCHAR(20) NOT NULL COMMENT '登录类型:登入或登出',
     access_ip VARCHAR(50) COMMENT '用户访问ip',
-    access_date DATE COMMENT '访问时间'
+    access_date timestamp COMMENT '访问时间'
 )CHARSET=utf8 COMMENT='用户登录登出记录表';
 
  -- 用户操作记录表
 CREATE TABLE operation_record(
     id INT PRIMARY KEY AUTO_INCREMENT COMMENT '记录id',
     user_id VARCHAR(50) NOT NULL COMMENT '用户id',
+    user_name varchar(40) not null comment '用户名',
     operation_name VARCHAR(50) NOT NULL COMMENT '操作的名称',
     operation_reslut VARCHAR(50) NOT NULL COMMENT '操作结果',
-    operation_date DATE COMMENT '操作时间'
+    operation_date timestamp COMMENT '操作时间'
 )CHARSET=utf8 COMMENT '用户操作记录表';
 
 -- 货物信息表
@@ -255,4 +256,10 @@ insert into dir values ('0305','03','生产出库',null,'出库类型');
 
 -- 2018/9/29
 alter table storage add storage_status varchar(2) not null default '0' comment '库存状态:0:正常;1:该库存数量为0时,进行软删除';
+
+-- 2018/10/08
+ALTER TABLE access_record MODIFY COLUMN access_date TIMESTAMP;
+create table operation_record(
+id int primary key auto_increment
+)
 

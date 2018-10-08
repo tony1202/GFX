@@ -104,10 +104,10 @@
 
 		// 登陆信息加密模块
 		function infoEncrypt(userId, password, checkCode) {
-			//var str1 = $.md5(password);
+			var str1 = $.md5(password);
 			//var str2 = $.md5(str1 + userId);
 			//var str3 = $.md5(str2 + checkCode.toUpperCase());
-			var str3 = $.md5(password + checkCode.toUpperCase());
+			var str3 = $.md5(str1 + checkCode.toUpperCase());
 			return str3;
 		}
 

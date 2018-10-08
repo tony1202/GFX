@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "operation_record")
 public class OperationRecord {
     /**
-     * 记录id
+     * 主键
      */
     @Id
     private Integer id;
@@ -18,36 +18,42 @@ public class OperationRecord {
     private String userId;
 
     /**
-     * 操作的名称
+     * 用户名
      */
-    @Column(name = "operation_name")
-    private String operationName;
+    @Column(name = "user_name")
+    private String userName;
+
+    /**
+     * 操作名称
+     */
+    @Column(name = "operator_name")
+    private String operatorName;
 
     /**
      * 操作结果
      */
-    @Column(name = "operation_reslut")
-    private String operationReslut;
+    @Column(name = "operator_result")
+    private String operatorResult;
 
     /**
      * 操作时间
      */
-    @Column(name = "operation_date")
-    private Date operationDate;
+    @Column(name = "operator_date")
+    private Date operatorDate;
 
     /**
-     * 获取记录id
+     * 获取主键
      *
-     * @return id - 记录id
+     * @return id - 主键
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * 设置记录id
+     * 设置主键
      *
-     * @param id 记录id
+     * @param id 主键
      */
     public void setId(Integer id) {
         this.id = id;
@@ -72,56 +78,74 @@ public class OperationRecord {
     }
 
     /**
-     * 获取操作的名称
+     * 获取用户名
      *
-     * @return operation_name - 操作的名称
+     * @return user_name - 用户名
      */
-    public String getOperationName() {
-        return operationName;
+    public String getUserName() {
+        return userName;
     }
 
     /**
-     * 设置操作的名称
+     * 设置用户名
      *
-     * @param operationName 操作的名称
+     * @param userName 用户名
      */
-    public void setOperationName(String operationName) {
-        this.operationName = operationName == null ? null : operationName.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    /**
+     * 获取操作名称
+     *
+     * @return operator_name - 操作名称
+     */
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    /**
+     * 设置操作名称
+     *
+     * @param operatorName 操作名称
+     */
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName == null ? null : operatorName.trim();
     }
 
     /**
      * 获取操作结果
      *
-     * @return operation_reslut - 操作结果
+     * @return operator_result - 操作结果
      */
-    public String getOperationReslut() {
-        return operationReslut;
+    public String getOperatorResult() {
+        return operatorResult;
     }
 
     /**
      * 设置操作结果
      *
-     * @param operationReslut 操作结果
+     * @param operatorResult 操作结果
      */
-    public void setOperationReslut(String operationReslut) {
-        this.operationReslut = operationReslut == null ? null : operationReslut.trim();
+    public void setOperatorResult(String operatorResult) {
+        this.operatorResult = operatorResult == null ? null : operatorResult.trim();
     }
 
     /**
      * 获取操作时间
      *
-     * @return operation_date - 操作时间
+     * @return operator_date - 操作时间
      */
-    public Date getOperationDate() {
-        return operationDate;
+    public Date getOperatorDate() {
+        return operatorDate;
     }
 
     /**
      * 设置操作时间
      *
-     * @param operationDate 操作时间
+     * @param operatorDate 操作时间
      */
-    public void setOperationDate(Date operationDate) {
-        this.operationDate = operationDate;
+    public void setOperatorDate(Date operatorDate) {
+        this.operatorDate = operatorDate;
     }
 }

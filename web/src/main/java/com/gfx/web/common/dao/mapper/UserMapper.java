@@ -13,4 +13,8 @@ public interface UserMapper extends Mapper<User> {
     User getUserById(@Param("userId") String userId);
 
     List<User> getUserListByRoleId(@Param("roleId") String roleId);
+
+    int checkUserexists(@Param("userId") String userId, @Param("oldPassWord") String oldPassWord);
+
+    int updatePassWord(@Param("userId") String userId, @Param("newPassWord") String newPassWord);
 }

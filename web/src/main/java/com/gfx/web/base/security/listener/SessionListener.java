@@ -20,8 +20,12 @@ import org.springframework.stereotype.Component;
 public class SessionListener extends SessionListenerAdapter {
     private static final Logger log = LoggerFactory.getLogger(SessionListener.class);
 
+    private final SystemLogService systemLogService;
+
     @Autowired
-    private SystemLogService systemLogService;
+    public SessionListener(SystemLogService systemLogService) {
+        this.systemLogService = systemLogService;
+    }
 
     /**
      * session创建
@@ -67,7 +71,7 @@ public class SessionListener extends SessionListenerAdapter {
             try {
                 systemLogService.addAccessRecord(userInfo.getUserId(),userInfo.getIp(),SystemLogService.ACCESS_TYPE_LOGOUT);
             } catch (Exception e) {
-                log.warn("system logout error ->{}",e.getMessage());
+                log.warn("system logout error ->",e);
             }
         }
 

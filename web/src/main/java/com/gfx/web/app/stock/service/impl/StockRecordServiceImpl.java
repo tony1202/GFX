@@ -7,6 +7,7 @@ import com.gfx.web.app.stock.dto.StockRecordDto;
 import com.gfx.web.app.stock.dto.StockRecordPagination;
 import com.gfx.web.app.stock.service.StockRecordService;
 import com.gfx.web.app.stock.service.StorageService;
+import com.gfx.web.base.operate.UserOperation;
 import com.gfx.web.common.dao.mapper.StockOperatorMapper;
 import com.gfx.web.common.entity.Dir;
 import com.gfx.web.common.entity.StockOperator;
@@ -48,6 +49,7 @@ public class StockRecordServiceImpl implements StockRecordService{
      */
     @Override
     @Transactional
+    @UserOperation("入库操作")
     public boolean stockIn(StockOperator stockIn) {
         try {
             //更新库存记录
@@ -69,6 +71,7 @@ public class StockRecordServiceImpl implements StockRecordService{
      */
     @Override
     @Transactional
+    @UserOperation(value = "出库操作")
     public boolean stockOut(StockOperator stockOut) {
         //更新库存
         storageService.reduceStorage(stockOut);

@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <script>
     // 查询参数
-    search_user_id = null
-    search_start_date = null
-    search_end_date = null
+    search_user_name = null;
+    search_start_date = null;
+    search_end_date = null;
 
     $(function(){
         datePickerInit();
@@ -14,7 +14,7 @@
     // 日期选择器初始化
 	function datePickerInit(){
 		$('.form_date').datetimepicker({
-			format:'yyyy-mm-dd',
+			format:'yyyy-mm-dd 00:00:00',
 			language : 'zh-CN',
 			endDate : new Date(),
 			weekStart : 1,
@@ -34,19 +34,19 @@
 	            field : 'id',
 	            title : '记录ID'
 	        },{
-	            field : 'userID',
+	            field : 'userId',
 	            title : '用户ID'
 	        },{
 	            field : 'userName',
 	            title : '用户名'
 	        },{
-	            field : 'operationName',
+	            field : 'operatorName',
 	            title : '操作'
 	        },{
-	            field : 'operationTime',
+	            field : 'operatorDate',
 	            title : '时间'
 	        },{
-	            field : 'operationResult',
+	            field : 'operatorResult',
 	            title : '操作结果'
 	        }],
 	        url : 'systemLog/getUserOperationRecords',
@@ -77,17 +77,17 @@
 		var temp = {
 			limit : params.limit,
 			offset : params.offset,
-			userID : search_user_id,
+			userName : search_user_name,
 			startDate : search_start_date,
 			endDate : search_end_date
-		}
+		};
 		return temp;
 	}
 
     // 查询操作
     function searchActionInit(){
         $('#search_button').click(function(){
-            search_user_id = $('#user_id').val();
+            search_user_name = $('#user_name').val();
             search_start_date = $('#start_date').val();
             search_end_date = $('#end_date').val();
             tableRefresh();
@@ -104,8 +104,8 @@
             <div class="col-md-3">
                 <form action="" class="form-inline">
                     <div class="form-group">
-                        <label class="form-label">用户ID：</label>
-                        <input type="text" id="user_id" class="form-control" placeholder="指定用户ID" style="width:50%">
+                        <label class="form-label">用户名：</label>
+                        <input type="text" id="user_name" class="form-control" placeholder="指定用户名" style="width:50%">
                     </div>
                 </form>
             </div>
