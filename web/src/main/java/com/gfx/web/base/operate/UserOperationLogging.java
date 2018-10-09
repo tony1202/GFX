@@ -40,7 +40,6 @@ public class UserOperationLogging {
      */
     @AfterReturning(returning = "returnValue", value = "operation() && @annotation(userOperation)")
     public void loggingUserOperation(JoinPoint joinPoint, Object returnValue, UserOperation userOperation) {
-        System.out.println("return");
         if (userOperation != null) {
             //获取操作名
             String operationName = userOperation.value();

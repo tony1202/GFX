@@ -186,7 +186,7 @@ function submitPasswordModify(){
 				"oldPassword" : oldPassword,
 				"newPassword" : newPassword,
 				"rePassword" : rePassword
-			}
+			};
 
 		// 将数据通过 AJAX 发送到后端
 		$.ajax({

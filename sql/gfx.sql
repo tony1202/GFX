@@ -13,7 +13,12 @@ CREATE TABLE USER(
     user_id VARCHAR(50) PRIMARY KEY COMMENT '用户主键',
     user_name VARCHAR(50) NOT NULL COMMENT '用姓名名',
     -- 密码初始为123456
-    pass_word VARCHAR(50) NOT NULL DEFAULT 'e10adc3949ba59abbe56e057f20f883e' COMMENT '密码',
+    pass_word VARCHAR(50) NOT NULL DEFAULT 'e10adc3949ba59abbe56e057f20f883e' COMMENT '初始密码',
+    age INT NULL COMMENT '年龄',
+    address VARCHAR(50) NULL COMMENT '住址',
+    sex VARCHAR(2) NULL COMMENT '性别:0-男;1-女',
+    phone VARCHAR(11) NULL COMMENT '联系电话',
+    id_no VARCHAR(19) NULL COMMENT '身份证号',
     user_status varchar(2) not null comment '用户状态：0-正常；1-禁用',
     create_date DATE NULL COMMENT '创建时间',
     update_date DATE NULL COMMENT '更新时间'
@@ -262,4 +267,8 @@ alter table storage add storage_status varchar(2) not null default '0' comment '
 -- 2018/10/08
 ALTER TABLE access_record MODIFY COLUMN access_date TIMESTAMP;
 -- 2018/10/09
-ALTER TABLE access_record ADD COLUMN user_name VARCHAR(50) COMMENT '用户名';
+ALTER TABLE USER ADD COLUMN age INT NULL COMMENT '年龄';
+ALTER TABLE USER ADD COLUMN address VARCHAR(50) NULL COMMENT '住址';
+ALTER TABLE USER ADD COLUMN sex VARCHAR(2) NULL COMMENT '性别:0-男;1-女';
+ALTER TABLE USER ADD COLUMN phone VARCHAR(11) NULL COMMENT '联系电话';
+ALTER TABLE USER ADD COLUMN id_no VARCHAR(19) NULL COMMENT '身份证号';

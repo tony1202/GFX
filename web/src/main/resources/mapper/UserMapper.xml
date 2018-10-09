@@ -8,12 +8,34 @@
     <id column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="id_no" jdbcType="VARCHAR" property="idNo" />
     <result column="user_status" jdbcType="VARCHAR" property="userStatus" />
     <result column="create_date" jdbcType="DATE" property="createDate" />
     <result column="update_date" jdbcType="DATE" property="updateDate" />
   </resultMap>
+  <resultMap id="userDto" type="com.gfx.web.app.userManage.dto.UserDto">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="id_no" jdbcType="VARCHAR" property="idNo" />
+    <result column="user_status" jdbcType="VARCHAR" property="userStatus" />
+    <result column="create_date" jdbcType="DATE" property="createDate" />
+    <result column="update_date" jdbcType="DATE" property="updateDate" />
+    <collection property="roles" resultMap="com.gfx.web.common.dao.mapper.RoleMapper.BaseResultMap"/>
+  </resultMap>
   <update id="updatePassWord">
     UPDATE user SET pass_word=#{newPassWord} where user_id = #{userId} and user_status='0'
+  </update>
+  <update id="deleteUserAdmin">
+    UPDATE user SET user_status = '1',update_date=sysdate() WHERE user_id = #{userId}
   </update>
   <select id="getUserById" resultType="com.gfx.web.common.entity.User">
       select user_id,user_name,pass_word from user where user_id=#{userId} and user_status='0'
@@ -24,4 +46,34 @@
     <select id="checkUserexists" resultType="java.lang.Integer">
       SELECT count(1) FROM user WHERE user_id=#{userId} and pass_word=#{oldPassWord} and user_status='0'
     </select>
+  <select id="getUserList" resultMap="userDto">
+    SELECT
+    u.user_id,
+    u.user_name,
+    u.age,
+    u.address,
+    u.sex,
+    u.phone,
+    u.id_no,
+    u.create_date,
+    r.role_id,
+    r.role_desc
+    from (
+       # 由于不能使用pageHelper分页,所以只能手动先进行分页子查询
+      select u1.* from user u1 WHERE u1.user_status = '0'
+      <if test="params.name!=null and params.name!=''">
+          AND u1.user_name LIKE concat("%",#{params.name},"%")
+      </if>
+      <if test="params.phone!=null and params.phone!=''">
+          and u1.phone like concat("%",#{params.phone},"%")
+      </if>
+      limit ${params.offset},${params.limit}
+      ) u
+    LEFT JOIN user_role ur ON u.user_id = ur.u_id
+    LEFT JOIN role r ON ur.r_id = r.role_id AND r.role_status = '0'
+
+  </select>
+  <select id="findUserNum" resultType="java.lang.Integer">
+    SELECT count(1) from user WHERE user_status='0' AND user_id LIKE concat(#{pinyin},"%")
+  </select>
 </mapper>

@@ -39,6 +39,7 @@
         <ehcache.version>2.10.5</ehcache.version>
         <UUID.version>3.1.5</UUID.version>
         <poi.version>4.0.0</poi.version>
+        <pinyin4j.version>2.5.1</pinyin4j.version>
     </properties>
 
 
@@ -173,7 +174,13 @@
                 <version>${aspectj.version}</version>
             </dependency>
 
-
+            <!--汉字转拼音 start-->
+            <dependency>
+                <groupId>com.belerweb</groupId>
+                <artifactId>pinyin4j</artifactId>
+                <version>${pinyin4j.version}</version>
+            </dependency>
+            <!--汉字转拼音 end-->
         </dependencies>
     </dependencyManagement>
 

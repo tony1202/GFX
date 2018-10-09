@@ -43,6 +43,32 @@ public class User {
     private Date updateDate;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
+     * 住址
+     */
+    private String address;
+
+    /**
+     * 性别:0-男;1-女
+     */
+    private String sex;
+
+    /**
+     * 联系电话
+     */
+    private String phone;
+
+    /**
+     * 身份证号
+     */
+    @Column(name = "id_no")
+    private String idNo;
+
+    /**
      * 获取用户主键
      *
      * @return user_id - 用户主键
@@ -148,5 +174,95 @@ public class User {
      */
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    /**
+     * 获取年龄
+     *
+     * @return age - 年龄
+     */
+    public Integer getAge() {
+        return age;
+    }
+
+    /**
+     * 设置年龄
+     *
+     * @param age 年龄
+     */
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    /**
+     * 获取住址
+     *
+     * @return address - 住址
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * 设置住址
+     *
+     * @param address 住址
+     */
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    /**
+     * 获取性别:0-男;1-女
+     *
+     * @return sex - 性别:0-男;1-女
+     */
+    public String getSex() {
+        return sex;
+    }
+
+    /**
+     * 设置性别:0-男;1-女
+     *
+     * @param sex 性别:0-男;1-女
+     */
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
+    }
+
+    /**
+     * 获取联系电话
+     *
+     * @return phone - 联系电话
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * 设置联系电话
+     *
+     * @param phone 联系电话
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 获取身份证号
+     *
+     * @return id_no - 身份证号
+     */
+    public String getIdNo() {
+        return idNo;
+    }
+
+    /**
+     * 设置身份证号
+     *
+     * @param idNo 身份证号
+     */
+    public void setIdNo(String idNo) {
+        this.idNo = idNo == null ? null : idNo.trim();
     }
 }
