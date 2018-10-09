@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
+    <link rel="stylesheet" type="text/css" href="tagsinput/jquery.tagsinput.css" />
+    <script type="text/javascript" src="tagsinput/jquery.tagsinput.js"></script>
     <style type="text/css">
         .table th, .table td {
             text-align: center;
@@ -157,8 +158,7 @@
                                     });
                                     rowEditOperation(row);
                                 },
-                                'click .delete': function (e,
-                                                           value, row, index) {
+                                'click .delete': function (e, value, row, index) {
                                     selectID = row.userId;
                                     $('#deleteWarning_modal').modal(
                                         'show');
@@ -195,6 +195,7 @@
         $('#edit_modal').modal("show");
         //初始化角色
         loadRolesInfo("personAdmin_role_edit",roles);
+        tagInit("role_edit_tags",roles);
         // load info
         $('#personAdmin_form_edit').bootstrapValidator("resetForm", true);
         $('#personAdmin_name_edit').val(row.userName);
@@ -264,14 +265,42 @@
      */
     function loadRolesInfo(element,selects) {
         if(rolesCache){
+            $("#"+element).empty();
             $.each(rolesCache,function (index,item) {
-                if(selects && selects.length>0 && isInArray(selects,item.roleId)){
-                    $("#"+element).append("<option value='" + item.roleId + "' selected='selected'>" + item.roleDesc + "</option>");
-                }else {
-                    $("#"+element).append("<option value='" + item.roleId + "'>" + item.roleDesc + "</option>");
-                }
+                $("#"+element).append("<option value='" + item.roleId + "'>" + item.roleDesc + "</option>");
             })
         }
+    }
+
+    /**
+     * 绑定下拉框改变事件
+     * @param item
+     * @param element 
+     */
+    function selectChange(item,element) {
+        var val = $(item).val();
+        //如果选择的标签不在当前标签页中，就添加
+        if (!$("#"+element).tagExist(val)){
+            $("#"+element).addTag(val);
+            roles.push(val);
+        }
+    }
+
+    /**
+     * 标签显示宽初始化
+     * @param elem 标签id
+     * @param value 初始值
+     */
+    function tagInit(elem,value) {
+        $('#'+elem).tagsInput({
+            width: 'auto',//宽度
+            defaultText : ''//设置默认文字
+        }); 
+        if (value && value.length>0){
+            $.each(value,function (index,item) {
+                $('#'+elem).addTag(item);
+            })
+        } 
     }
     // 日期选择器初始化
     function datePickerInit() {
@@ -1062,8 +1091,11 @@
                             <div class="form-group">
                                 <label for="" class="control-label col-md-5 col-sm-5"> <span>职位：</span>
                                 </label>
+                                <!--<div class="col-md-7 col-sm-7">-->
+                                <!--</div>-->
                                 <div class="col-md-7 col-sm-7">
-                                    <select multiple="multiple" class="form-control" id="personAdmin_role_edit">
+                                    <input name="tags" class="form-control" id="role_edit_tags" value="" />
+                                    <select class="form-control" id="personAdmin_role_edit" onchange="selectChange(this,'role_edit_tags')">
 
                                     </select>
                                 </div>
