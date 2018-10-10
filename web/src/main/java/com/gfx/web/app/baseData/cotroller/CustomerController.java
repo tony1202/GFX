@@ -11,6 +11,7 @@ import com.gfx.web.base.dto.VMSResponseFactory;
 import com.gfx.web.common.entity.Customer;
 import org.apache.commons.collections.MapUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,7 @@ public class CustomerController {
      * @return 响应
      */
     @PostMapping("/addCustomer")
+    @RequiresPermissions("customer:add")
     public Map<String, Object> addCustomer(@RequestBody Customer customer) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -98,6 +100,7 @@ public class CustomerController {
      * @return 响应
      */
     @GetMapping("/getCustomerListAjax")
+    @RequiresAuthentication
     public Map<String,Object> getCustomerListAjax(){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);

@@ -154,14 +154,15 @@
                                     //清空数组
                                     roles = [];
                                     $.each(row.roles,function (index,item) {
-                                       roles.push(item.roleId);
+                                        if(item.roleId){
+                                            roles.push(item.roleId);
+                                        }
                                     });
                                     rowEditOperation(row);
                                 },
                                 'click .delete': function (e, value, row, index) {
                                     selectID = row.userId;
-                                    $('#deleteWarning_modal').modal(
-                                        'show');
+                                    $('#deleteWarning_modal').modal('show');
                                 }
                             }
                         }],
@@ -189,12 +190,11 @@
     }
 
     // 行编辑操作
-    var unassignRepoCache;
-
     function rowEditOperation(row) {
         $('#edit_modal').modal("show");
+
         //初始化角色
-        loadRolesInfo("personAdmin_role_edit",roles);
+        loadRolesInfo("personAdmin_role_edit");
         tagInit("role_edit_tags",roles);
         // load info
         $('#personAdmin_form_edit').bootstrapValidator("resetForm", true);
@@ -205,28 +205,8 @@
         $('#personAdmin_age_edit').val(row.age);
         $('#personAdmin_idNo_edit').val(row.idNo);
 
-        $('#personAdmin_roleId_edit').text("");
+        //$('#personAdmin_roleId_edit').text("");
 
-        // 加载角色信息
-        // if (row.repositoryBelongID != null) {
-        //     $('#personAdmin_roleId_edit').append("<option value='" + row.repositoryBelongID + "'>" + row.repositoryBelongID + "</option>");
-        // }
-        // $('#personAdmin_roleId_edit').append("<option value=''>不指派</option>");
-        //
-        // $('#repositoryInfo').removeClass('hide').addClass('hide');
-        // $.ajax({
-        //     type: 'GET',
-        //     url: 'userManage/getUserList',
-        //     dataType: 'json',
-        //     contentType: 'application/json',
-        //     success: function (response) {
-        //         data = response.data;
-        //         unassignRepoCache = data;
-        //         $.each(data, function (index, element) {
-        //             $('#personAdmin_roleId_edit').append("<option value='" + element.id + "'>" + element.id + "</option>");
-        //         })
-        //     }
-        // });
     }
 
     /**
@@ -246,26 +226,50 @@
             });
     }
     /**
-     * 使用jquery的inArray方法判断元素是否存在于数组中
+     * 根据type,从数组中查找指定id,或desc
      * @param {Object} arr 数组
      * @param {Object} value 元素值
      */
-    function isInArray(arr,value){
-        var index = $.inArray(value,arr);
-        if(index >= 0){
-            return true;
+    function getInArray(arr,value,type){
+        var result="";
+        if (arr && arr.length>0){
+            $.each(arr,function (index,item) {
+                if (type === "id"){
+                    if (item.roleId === value){
+                        result = item.roleDesc;
+                        //跳出整个循环
+                        return false;
+                    }
+                }else if(type === "desc"){
+                    if(item.roleDesc === value){
+                        result = item.roleId;
+                        return false;
+                    }
+                }
+            });
         }
-        return false;
+        return result;
     }
+
+    /**
+     * 删除数组中指定的元素
+     */
+    function deleteFromArray(arr,value) {
+        var index = arr.indexOf(value);
+        if (index > -1){
+            arr.splice(index,1);
+        }
+    }
+
 
     /**
      * 将角色信息加载到指定的位置
      * @param element 加载位置id
-     * @param selects 默认选择
      */
-    function loadRolesInfo(element,selects) {
+    function loadRolesInfo(element) {
         if(rolesCache){
             $("#"+element).empty();
+            $("#"+element).append("<option value=''>请选职位</option>");
             $.each(rolesCache,function (index,item) {
                 $("#"+element).append("<option value='" + item.roleId + "'>" + item.roleDesc + "</option>");
             })
@@ -279,10 +283,12 @@
      */
     function selectChange(item,element) {
         var val = $(item).val();
-        //如果选择的标签不在当前标签页中，就添加
-        if (!$("#"+element).tagExist(val)){
-            $("#"+element).addTag(val);
-            roles.push(val);
+        if (val){
+            //如果选择的标签不在当前标签页中，就添加
+            if (roles.indexOf(val) === -1){
+                $("#"+element).addTag(getInArray(rolesCache,val,"id"));
+                roles.push(val);
+            }
         }
     }
 
@@ -294,11 +300,19 @@
     function tagInit(elem,value) {
         $('#'+elem).tagsInput({
             width: 'auto',//宽度
-            defaultText : ''//设置默认文字
-        }); 
+            defaultText : '',//设置默认文字
+            //删除事件
+            onRemoveTag:function(tag){
+                //从数组中删除
+                deleteFromArray(roles,getInArray(rolesCache,tag,"desc"));
+            }
+        });
+        //先清空标志组
+        $('#'+elem).importTags('');
         if (value && value.length>0){
             $.each(value,function (index,item) {
-                $('#'+elem).addTag(item);
+                var desc = getInArray(rolesCache,item,"id");
+                $('#'+elem).addTag(desc);
             })
         } 
     }
@@ -320,7 +334,7 @@
 
     // 添加供应商模态框数据校验
     function bootstrapValidatorInit() {
-        $("#repositoryAdmin_form,#personAdmin_form_edit").bootstrapValidator({
+        $("#personAdmin_form,#personAdmin_form_edit").bootstrapValidator({
             message: 'This is not valid',
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -340,6 +354,10 @@
                     validators: {
                         notEmpty: {
                             message: '员工电话电话不能为空'
+                        },
+                        regexp:{
+                            regexp: /^1[34578]\d{9}$/,
+                            message: '手机号码格式不符'
                         }
                     }
                 },
@@ -354,6 +372,10 @@
                     validators: {
                         notEmpty: {
                             message: '员工身份证号不能为空'
+                        },
+                        regexp:{
+                            regexp: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+                            message: '身份证号码格式不符'
                         }
                     }
                 }
@@ -381,7 +403,8 @@
                     phone: $('#personAdmin_phone_edit').val(),
                     address: $('#personAdmin_address_edit').val(),
                     age: $('#personAdmin_age_edit').val(),
-                    idNo: $('#personAdmin_idNo_edit').val()
+                    idNo: $('#personAdmin_idNo_edit').val(),
+                    roleIds: roles
                 };
 
                 // ajax
@@ -396,10 +419,10 @@
                         var type;
                         var msg;
                         var append = '';
-                        if (response.result == "success") {
+                        if (response.result === "success") {
                             type = "success";
                             msg = "员工信息更新成功";
-                        } else if (resposne == "error") {
+                        } else {
                             type = "error";
                             msg = "员工信息更新失败"
                         }
@@ -414,21 +437,6 @@
                 });
             });
 
-
-
-        // $('#personAdmin_repoID_edit').change(function () {
-        //     var repositoryID = $(this).val();
-        //     $('#repositoryInfo').removeClass('hide').addClass('hide');
-        //     $.each(unassignRepoCache, function (index, element) {
-        //         if (element.id == repositoryID) {
-        //             $('#repository_address').text(element.address);
-        //             $('#repository_area').text(element.area);
-        //             $('#repository_status').text(element.status);
-        //             $('#repositoryInfo').removeClass('hide');
-        //         }
-        //     })
-        //
-        // })
     }
 
     // 刪除仓库管理员信息
@@ -448,7 +456,7 @@
                     var append = '';
                     if (response.result === "success") {
                         type = "success";
-                        msg = "仓库管理员信息删除成功";
+                        msg = "员工信息删除成功";
                     } else {
                         type = "error";
                         msg = "仓库管理员信息删除失败";
@@ -466,10 +474,16 @@
         })
     }
 
-    // 添加仓库管理员信息
+    // 添加员工信息
     function addRepositoryAdminAction() {
         $('#add_personAdmin').click(function () {
             $('#add_modal').modal("show");
+            //清空roles
+            roles = [];
+            //初始化职位标签
+            tagInit('role_add_tags');
+            //初始化角色下来框
+            loadRolesInfo('personAdmin_role_add');
         });
 
         $('#add_modal_submit').click(function () {
@@ -479,7 +493,8 @@
                 sex: $('#personAdmin_sex').val(),
                 address: $('#personAdmin_address').val(),
                 age: $('#personAdmin_age').val(),
-                idNo: $('#personAdmin_idNo').val()
+                idNo: $('#personAdmin_idNo').val(),
+                roleIds: roles
             };
             // ajax
             $.ajax({
@@ -510,7 +525,7 @@
                     $('#personAdmin_phone').val("");
                     $('#personAdmin_address').val("");
                     $('#personAdmin_age').val("");
-                    $('#repositoryAdmin_form').bootstrapValidator("resetForm", true);
+                    $('#personAdmin_form').bootstrapValidator("resetForm", true);
                 },
                 error: function (xhr, textStatus, errorThown) {
                     $('#add_modal').modal("hide");
@@ -729,7 +744,7 @@
     </div>
 </div>
 
-<!-- 添加仓库管理员信息模态框 -->
+<!-- 添加员工信息模态框 -->
 <div id="add_modal" class="modal fade" table-index="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"
      data-backdrop="static">
@@ -746,7 +761,7 @@
                 <div class="row">
                     <div class="col-md-1 col-sm-2"></div>
                     <div class="col-md-8 col-sm-8">
-                        <form class="form-horizontal" role="form" id="repositoryAdmin_form"
+                        <form class="form-horizontal" role="form" id="personAdmin_form"
                               style="margin-top: 25px">
                             <div class="form-group">
                                 <label for="personAdmin_name" class="control-label col-md-5 col-sm-5">
@@ -801,6 +816,15 @@
                                 <div class="col-md-7 col-sm-7">
                                     <input type="text" class="form-control" value="" id="personAdmin_idNo"
                                            name="personAdmin_idNo" placeholder="身份证号">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="control-label col-md-5 col-sm-5"> <span>职位：</span>
+                                </label>
+                                <div class="col-md-7 col-sm-7">
+                                    <input name="tags" class="form-control" id="role_add_tags" value="" />
+                                    <select class="form-control" id="personAdmin_role_add" onchange="selectChange(this,'role_add_tags')">
+                                    </select>
                                 </div>
                             </div>
                         </form>
@@ -1018,7 +1042,7 @@
     </div>
 </div>
 
-<!-- 编辑仓库管理员信息模态框 -->
+<!-- 编辑员工信息模态框 -->
 <div id="edit_modal" class="modal fade" table-index="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"
      data-backdrop="static">
@@ -1091,12 +1115,9 @@
                             <div class="form-group">
                                 <label for="" class="control-label col-md-5 col-sm-5"> <span>职位：</span>
                                 </label>
-                                <!--<div class="col-md-7 col-sm-7">-->
-                                <!--</div>-->
                                 <div class="col-md-7 col-sm-7">
                                     <input name="tags" class="form-control" id="role_edit_tags" value="" />
                                     <select class="form-control" id="personAdmin_role_edit" onchange="selectChange(this,'role_edit_tags')">
-
                                     </select>
                                 </div>
                             </div>

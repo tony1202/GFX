@@ -11,6 +11,20 @@
     <result column="create_date" jdbcType="DATE" property="createDate" />
     <result column="update_date" jdbcType="DATE" property="updateDate" />
   </resultMap>
+    <insert id="addRoles">
+        INSERT INTO user_role(u_id, r_id, create_date, update_date) VALUES
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{userId},#{roleId},sysdate(),sysdate())
+        </foreach>
+    </insert>
+    <insert id="addRoles2">
+        <foreach collection="roleIds" item="roleId" separator=";">
+            INSERT INTO user_role(u_id, r_id, create_date, update_date) VALUES (#{userId},#{roleId},sysdate(),sysdate())
+        </foreach>
+    </insert>
+    <delete id="deleteByUserId">
+        DELETE FROM user_role WHERE u_id=#{userId}
+    </delete>
     <select id="getRolesByUserId" resultType="java.lang.String">
       select r.role_id from role r left join user_role u on r.role_id = u.r_id where u.u_id = #{userId}
     </select>

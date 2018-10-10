@@ -9,6 +9,8 @@ import com.gfx.web.base.dto.VMSResponseFactory;
 import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.Goods;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,7 @@ public class GoodsController {
      * @return 分页数据
      */
     @GetMapping("/getGoodsList")
+    @RequiresAuthentication
     public Map<String,Object> getGoodsList(Pagination pagination){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -62,6 +65,7 @@ public class GoodsController {
      * @return 响应
      */
     @PostMapping("/addGoods")
+    @RequiresPermissions("goods:add")
     public Map<String, Object> addGoods(@RequestBody Goods goods){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         if (StringUtils.equalsIgnoreCase(goods.getType(), CommonConstant.GoodsConstant.GOOD_TYPE_TAPE)){
@@ -88,6 +92,7 @@ public class GoodsController {
      * @return
      */
     @PostMapping("/updateGoods")
+    @RequiresPermissions("goods:update")
     public Map<String,Object> updateGoods(@RequestBody Goods goods){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);

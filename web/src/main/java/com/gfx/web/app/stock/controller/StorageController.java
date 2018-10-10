@@ -9,6 +9,8 @@ import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.Storage;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,7 @@ public class StorageController {
      * @return
      */
     @GetMapping("/getStorageAjax")
+    @RequiresAuthentication
     public Map<String,Object> getStorageAjax(@RequestParam("goodsId") String goodsId,
                                              @RequestParam("goodsType")String goodsType,
                                              @RequestParam("goodsQuality")String goodsQuality){
@@ -66,6 +69,7 @@ public class StorageController {
      * @return
      */
     @GetMapping("/getStorageList")
+    @RequiresAuthentication
     public Map<String,Object> getStorageList(StoragePagination pagination){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -109,6 +113,7 @@ public class StorageController {
      * @return
      */
     @PostMapping("/updateStorage")
+    @RequiresPermissions("storage:update")
     public Map<String,Object> updateStorage(@RequestBody Storage storage){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -125,6 +130,7 @@ public class StorageController {
      * @return
      */
     @DeleteMapping("/deleteStorage/{storageId}")
+    @RequiresPermissions("storage:delete")
     public Map<String,Object> deleteStorage(@PathVariable String storageId){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);

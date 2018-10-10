@@ -9,6 +9,7 @@ import com.gfx.web.common.entity.Role;
 import com.gfx.web.common.entity.User;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,8 @@ public class UserManageController {
      * @return
      */
     @PutMapping("/updateUserAdmin")
-    public Map<String, Object> updateUserAdmin(@RequestBody User user) {
+    @RequiresPermissions("user:update")
+    public Map<String, Object> updateUserAdmin(@RequestBody UserDto user) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
         try {
@@ -101,6 +103,7 @@ public class UserManageController {
      * @return
      */
     @DeleteMapping("/deleteUserAdmin/{userId}")
+    @RequiresPermissions("user:delete")
     public Map<String, Object> deleteUserAdmin(@PathVariable String userId) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -124,7 +127,8 @@ public class UserManageController {
      * @return
      */
     @PostMapping("/addUserAdmin")
-    public Map<String, Object> addUserAdmin(@RequestBody User user) {
+    @RequiresPermissions("user:add")
+    public Map<String, Object> addUserAdmin(@RequestBody UserDto user) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
         try {

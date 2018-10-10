@@ -11,17 +11,21 @@ import com.gfx.web.common.entity.Role;
 import com.gfx.web.common.entity.User;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author tony
@@ -80,7 +84,8 @@ public class UserManageServiceImpl implements UserManageService {
         params.put("limit",pagination.getLimit());
 
         List<UserDto> list = userMapper.getUserList(params);
-        result.put("total", (long)list.size());
+        long total = userMapper.getTotal(params);
+        result.put("total", total);
         result.put("data", list);
         return result;
     }
@@ -93,8 +98,15 @@ public class UserManageServiceImpl implements UserManageService {
      */
     @Override
     @UserOperation("更新员工信息")
-    public boolean updateUserAdmin(User user) {
+    @Transactional
+    public boolean updateUserAdmin(UserDto user) {
         user.setUpdateDate(new Date());
+        //先删除原有角色配置
+        roleMapper.deleteByUserId(user.getUserId());
+        if (CollectionUtils.isNotEmpty(user.getRoleIds())){
+            //重新新增
+            roleMapper.addRoles(user.getUserId(),user.getRoleIds());
+        }
         return userMapper.updateByPrimaryKeySelective(user) > 0;
     }
 
@@ -118,7 +130,7 @@ public class UserManageServiceImpl implements UserManageService {
      * @return
      */
     @Override
-    public String addUserAdmin(User user) {
+    public String addUserAdmin(UserDto user) {
         String result=null;
         if (StringUtils.isNotBlank(user.getUserName())) {
             String userId = generateUserId(user.getUserName());
@@ -128,6 +140,9 @@ public class UserManageServiceImpl implements UserManageService {
             user.setUserId(userId);
             if (userMapper.insertSelective(user) > 0){
                 result = userId;
+            }
+            if (CollectionUtils.isNotEmpty(user.getRoleIds())){
+                roleMapper.addRoles2(user.getUserId(), user.getRoleIds());
             }
         }
         return result;

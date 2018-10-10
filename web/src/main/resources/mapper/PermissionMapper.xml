@@ -12,4 +12,10 @@
     <result column="create_date" jdbcType="DATE" property="createDate" />
     <result column="update_date" jdbcType="DATE" property="updateDate" />
   </resultMap>
+    <select id="getPermissionsByRoles" resultType="java.lang.String">
+      SELECT p.permission_id FROM permission p LEFT JOIN role_permission rp ON p.permission_id = rp.p_id WHERE rp.r_id IN
+      <foreach collection="roles" item="role" open="(" close=")" separator=",">
+          #{role}
+      </foreach>
+    </select>
 </mapper>

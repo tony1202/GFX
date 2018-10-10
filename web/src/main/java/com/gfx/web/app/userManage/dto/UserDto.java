@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class UserDto extends User{
     private List<Role> roles;
+    private List<String> roleIds;
 
     public List<Role> getRoles() {
         return roles;
@@ -18,5 +19,13 @@ public class UserDto extends User{
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<String> getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(List<String> roleIds) {
+        this.roleIds = roleIds;
     }
 }

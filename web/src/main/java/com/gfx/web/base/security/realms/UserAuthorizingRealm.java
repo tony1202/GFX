@@ -41,14 +41,14 @@ public class UserAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-
-        Set<String> roles = new HashSet<>();
-
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         UserInfoDto userInfo = (UserInfoDto) session.getAttribute(VMSConstant.SessionConstant.USER_INFO);
-        roles.addAll(userInfo.getRoles());
-        return new SimpleAuthorizationInfo(roles);
+        Set<String> roles = new HashSet<>(userInfo.getRoles());
+        Set<String> permission = new HashSet<>(userInfo.getPermissions());
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo(roles);
+        simpleAuthorizationInfo.setStringPermissions(permission);
+        return simpleAuthorizationInfo;
     }
 
     /**

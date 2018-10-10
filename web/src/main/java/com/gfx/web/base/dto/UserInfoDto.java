@@ -23,6 +23,8 @@ public class UserInfoDto implements Serializable{
     private String ip;
     /**角色*/
     private List<String> roles = new ArrayList<>();
+    /**权限*/
+    private List<String> permissions = new ArrayList<>();
 
     public String getUserId() {
         return userId;
@@ -70,5 +72,13 @@ public class UserInfoDto implements Serializable{
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
 }

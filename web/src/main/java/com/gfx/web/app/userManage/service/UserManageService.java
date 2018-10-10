@@ -1,5 +1,6 @@
 package com.gfx.web.app.userManage.service;
 
+import com.gfx.web.app.userManage.dto.UserDto;
 import com.gfx.web.base.dto.Pagination;
 import com.gfx.web.common.entity.Role;
 import com.gfx.web.common.entity.User;
@@ -31,7 +32,7 @@ public interface UserManageService {
      * @param user 员工信息
      * @return 更新结果
      */
-    boolean updateUserAdmin(User user);
+    boolean updateUserAdmin(UserDto user);
 
     /**
      * 删除员工信息
@@ -45,7 +46,7 @@ public interface UserManageService {
      * @param user 员工信息
      * @return
      */
-    String addUserAdmin(User user);
+    String addUserAdmin(UserDto user);
 
     /**
      * 查询角色列表

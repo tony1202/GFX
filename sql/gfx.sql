@@ -203,9 +203,7 @@ CONSTRAINT fk_afterSale_goods_id FOREIGN KEY (goods_id) REFERENCES goods(id)
 insert into user values('admin','admin','123456','0',null,null);
 insert into user values ('tony','tony','123456','0',null,null);
 
-insert into role values('commonsAdmin','通用管理员','0',null,null);
-insert into role values('systemAdmin','系统管理员','0',null,null);
-insert into role values('admin','管理员','0',null,null);
+insert into role values('admin','管理员','0',sysdate(),sysdate());
 
 insert into user_role values('admin','commonsAdmin',null,null);
 insert into user_role values('tony','commonsAdmin',null,null);
@@ -272,3 +270,34 @@ ALTER TABLE USER ADD COLUMN address VARCHAR(50) NULL COMMENT '住址';
 ALTER TABLE USER ADD COLUMN sex VARCHAR(2) NULL COMMENT '性别:0-男;1-女';
 ALTER TABLE USER ADD COLUMN phone VARCHAR(11) NULL COMMENT '联系电话';
 ALTER TABLE USER ADD COLUMN id_no VARCHAR(19) NULL COMMENT '身份证号';
+-- 2018/10/10
+insert into role values ('storer','仓管员','0',sysdate(),sysdate());
+insert into role values ('buyer','采购员','0',sysdate(),sysdate());
+insert into role values ('governor','主管','0',sysdate(),sysdate());
+insert into permission values ('user:update','员工更新','/updateUserAdmin',null,sysdate(),sysdate());
+insert into permission values ('user:delete','员工删除','/deleteUserAdmin',null,sysdate(),sysdate());
+insert into permission values ('user:add','员工新增','/addUserAdmin',null,sysdate(),sysdate());
+insert into permission values ('goods:add','货物新增','/addGoods',null,sysdate(),sysdate());
+insert into permission values ('goods:update','货物更新','/updateGoods',null,sysdate(),sysdate());
+insert into permission values ('customer:add','客户新增','/addCustomer',null,sysdate(),sysdate());
+insert into permission values ('customer:update','客户更新','/addCustomer',null,sysdate(),sysdate());
+insert into permission values ('stock:in','入库操作','stockIn',null,sysdate(),sysdate());
+insert into permission values ('stock:out','出库操作','stockOut',null,sysdate(),sysdate());
+insert into permission values ('stock:select','出入库查询','searchStockRecord',null,sysdate(),sysdate());
+
+insert into permission values ('storage:update','库存更新','updateStorage',null,sysdate(),sysdate());
+insert into permission values ('storage:delete','库存更新','deleteStorage',null,sysdate(),sysdate());
+
+
+insert into role_permission values ('user:update','admin',sysdate(),sysdate());
+insert into role_permission values ('user:delete','admin',sysdate(),sysdate());
+insert into role_permission values ('user:add','admin',sysdate(),sysdate());
+insert into role_permission values ('goods:add','admin',sysdate(),sysdate());
+insert into role_permission values ('customer:update','admin',sysdate(),sysdate());
+insert into role_permission values ('customer:add','admin',sysdate(),sysdate());
+insert into role_permission values ('stock:in','admin',sysdate(),sysdate());
+insert into role_permission values ('stock:out','admin',sysdate(),sysdate());
+insert into role_permission values ('stock:select','admin',sysdate(),sysdate());
+insert into role_permission values ('storage:update','admin',sysdate(),sysdate());
+insert into role_permission values ('storage:delete','admin',sysdate(),sysdate());
+

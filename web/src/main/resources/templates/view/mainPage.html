@@ -78,27 +78,22 @@
                     <div id="collapse1" class="panel-collapse collapse collapseBody">
                         <div class="panel-body">
                             <ul class="list-group">
-                                <!--<@shiro.hasRole name="commonsAdmin">-->
-                                    <!--<li class="list-group-item">-->
-                                        <!--<a href="javascript:void(0)"  class="menu_item"-->
-                                           <!--name="page/storageManagementCommon.html">库存查询</a>-->
-                                    <!--</li>-->
-                                <!--</@shiro.hasRole>-->
-                                <!--<@shiro.hasRole name="systemAdmin">-->
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/storageManagement.html">库存查询</a>
                                     </li>
+                                    <@shiro.hasAnyRoles name="admin,storer">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"
                                            class="menu_item"
                                            name="page/stockRecordManagement.html">出入库记录</a>
                                     </li>
-                                <!--</@shiro.hasRole>-->
+                                    </@shiro.hasAnyRoles>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <@shiro.hasAnyRoles name="admin,storer">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -111,7 +106,6 @@
                     </div>
                     <div id="collapse2" class="panel-collapse collapse collapseBody in">
                         <div class="panel-body">
-                            <!--<@shiro.hasRole name="systemAdmin">-->
                                 <ul class="list-group">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
@@ -122,7 +116,6 @@
                                            name="page/stock-outManagement.html">货物出库</a>
                                     </li>
                                 </ul>
-                            <!--</@shiro.hasRole>-->
                             <!--<@shiro.hasRole name="commonsAdmin">-->
                                 <!--<ul class="list-group">-->
                                     <!--<li class="list-group-item">-->
@@ -138,7 +131,8 @@
                         </div>
                     </div>
                 </div>
-                <@shiro.hasRole name="systemAdmin">
+                </@shiro.hasAnyRoles>
+                <@shiro.hasRole name="admin">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -161,7 +155,7 @@
                         </div>
                     </div>
                 </@shiro.hasRole>
-                <@shiro.hasRole name="systemAdmin">
+
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -175,14 +169,19 @@
                         <div id="collapse4" class="panel-collapse collapse collapseBody">
                             <div class="panel-body">
                                 <ul class="list-group">
+                                    <@shiro.hasAnyRoles name="admin,buyer">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/supplierManagement.html">供应商信息管理</a>
                                     </li>
+                                    </@shiro.hasAnyRoles>
+                                    <@shiro.hasAnyRoles name="admin,saleMan">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/customerManagement.html">客户信息管理</a>
                                     </li>
+                                    </@shiro.hasAnyRoles>
+                                    <@shiro.hasAnyRoles name="admin,storer">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/goodsManagement.html">货物信息管理</a>
@@ -191,11 +190,12 @@
                                         <a href="javascript:void(0)"  class="menu_item"
                                            name="page/repositoryManagement.html">仓库信息管理</a>
                                     </li>
+                                    </@shiro.hasAnyRoles>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                </@shiro.hasRole>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -211,7 +211,7 @@
                                     <a href="javascript:void(0)"  class="menu_item"
                                        name="page/passwordModification.html">更改密码</a>
                                 </li>
-                                <@shiro.hasRole name="systemAdmin">
+                                <@shiro.hasRole name="admin">
                                     <li class="list-group-item">
                                         <a href="javascript:void(0)"
                                            class="menu_item" name="page/userOperationRecorderManagement.html">系统日志</a>

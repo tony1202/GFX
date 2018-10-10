@@ -31,4 +31,10 @@ public interface UserMapper extends Mapper<User> {
      */
     int findUserNum(@Param("pinyin") String pinyin);
 
+    /**
+     * 查询符合分页条件的记录总数
+     * @param params
+     * @return
+     */
+    long getTotal(@Param("params") Map<String, Object> params);
 }

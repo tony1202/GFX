@@ -11,6 +11,7 @@ import com.gfx.web.base.operate.UserOperation;
 import com.gfx.web.base.util.UUIDUtils;
 import com.gfx.web.common.entity.StockOperator;
 import org.apache.commons.collections.MapUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class StockRecordController {
      * @return 响应
      */
     @PostMapping("/stockIn")
+    @RequiresPermissions("stock:in")
     public Map<String, Object> stockIn(@RequestBody StockOperator stockIn) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -65,6 +67,7 @@ public class StockRecordController {
      * @return
      */
     @PostMapping("/stockOut")
+    @RequiresPermissions("stock:out")
     public Map<String,Object> stockOut(@RequestBody StockOperator stockOut){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -86,6 +89,7 @@ public class StockRecordController {
      * @return 出入库记录
      */
     @GetMapping("/searchStockRecord")
+    @RequiresPermissions("stock:select")
     public Map<String,Object> searchStockRecord(StockRecordPagination pagination){
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);

@@ -29,7 +29,7 @@ spring:
       max-active: 20
       min-idle: 1
       initial-size: 1
-      url: jdbc:mysql://localhost:3306/gfx?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://localhost:3306/gfx?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
 
 
 
