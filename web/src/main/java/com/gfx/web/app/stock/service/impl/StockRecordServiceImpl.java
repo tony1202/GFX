@@ -107,7 +107,7 @@ public class StockRecordServiceImpl implements StockRecordService{
         if (pagination.getEndDate()!=null){
             params.put("endDate",pagination.getEndDate());
         }
-        Page<Object> page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        Page<Object> page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         List<StockRecordDto> list = stockOperatorMapper.searchStockRecord(params);
         result.put("total",page.getTotal());
         result.put("data",list);

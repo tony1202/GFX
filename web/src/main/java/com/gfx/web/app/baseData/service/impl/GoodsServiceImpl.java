@@ -76,8 +76,8 @@ public class GoodsServiceImpl implements GoodsService {
                 break;
         }
         Page page = null;
-        if (pagination.getLimit() >= 0 && pagination.getOffset() >= 0) {
-            page = PageHelper.startPage(pagination.getOffset() + 1, pagination.getLimit(), true);
+        if (pagination.getLimit() >= 0 && pagination.getOffset() > 0) {
+            page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         }
         List<GoodsDto> list = goodsMapper.getGoodsByPage(params);
         if (page!=null){

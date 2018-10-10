@@ -110,7 +110,7 @@ public class SystemLogServiceImpl implements SystemLogService {
         if (pagination.getEndDate()!=null){
             params.put("endDate",pagination.getEndDate());
         }
-        Page<Object> page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        Page<Object> page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         List<AccessRecord> list = accessRecordMapper.getAccessRecords(params);
         result.put("total",page.getTotal());
         result.put("data",list);

@@ -284,10 +284,8 @@ insert into permission values ('customer:update','客户更新','/addCustomer',n
 insert into permission values ('stock:in','入库操作','stockIn',null,sysdate(),sysdate());
 insert into permission values ('stock:out','出库操作','stockOut',null,sysdate(),sysdate());
 insert into permission values ('stock:select','出入库查询','searchStockRecord',null,sysdate(),sysdate());
-
 insert into permission values ('storage:update','库存更新','updateStorage',null,sysdate(),sysdate());
 insert into permission values ('storage:delete','库存更新','deleteStorage',null,sysdate(),sysdate());
-
 
 insert into role_permission values ('user:update','admin',sysdate(),sysdate());
 insert into role_permission values ('user:delete','admin',sysdate(),sysdate());
@@ -301,3 +299,8 @@ insert into role_permission values ('stock:select','admin',sysdate(),sysdate());
 insert into role_permission values ('storage:update','admin',sysdate(),sysdate());
 insert into role_permission values ('storage:delete','admin',sysdate(),sysdate());
 
+-- 2018/10/11
+insert into role_permission values ('stock:in','storer',sysdate(),sysdate());
+insert into role_permission values ('stock:out','storer',sysdate(),sysdate());
+insert into role_permission values ('stock:select','storer',sysdate(),sysdate());
+insert into role_permission values ('storage:update','storer',sysdate(),sysdate());

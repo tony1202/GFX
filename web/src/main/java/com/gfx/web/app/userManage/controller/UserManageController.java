@@ -9,6 +9,7 @@ import com.gfx.web.common.entity.Role;
 import com.gfx.web.common.entity.User;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,7 @@ public class UserManageController {
      * @return
      */
     @GetMapping("/getUserByRoleId")
+    @RequiresAuthentication
     public Map<String, Object> getUserByRoleId(@RequestParam("roleId") String roleId) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);
@@ -59,6 +61,7 @@ public class UserManageController {
      * @return 员工数据
      */
     @GetMapping("/getUserList")
+    @RequiresAuthentication
     public Map<String, Object> getUserList(Pagination pagination) {
         VMSResponse vmsResponse = VMSResponseFactory.newInstance();
         vmsResponse.setResponseBodyResult(VMSResponse.RESPONSE_RESULT_ERROR);

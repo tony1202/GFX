@@ -64,7 +64,7 @@ public class UserOperationServiceImpl implements UserOperationService {
         if (pagination.getEndDate()!=null){
             params.put("endDate",pagination.getEndDate());
         }
-        Page<Object> page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+        Page<Object> page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         List<OperationRecord> list = operationRecordMapper.getUserOperationRecords(params);
         result.put("data",list);
         result.put("total",page.getTotal());

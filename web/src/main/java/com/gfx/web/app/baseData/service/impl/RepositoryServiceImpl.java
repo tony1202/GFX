@@ -66,8 +66,8 @@ public class RepositoryServiceImpl implements RepositoryService {
                 break;
         }
         Page page = null;
-        if (pagination.getLimit() >=0 && pagination.getOffset() >= 0) {
-            page = PageHelper.startPage(pagination.getOffset() + 1, pagination.getLimit(), true);
+        if (pagination.getLimit() >0 && pagination.getOffset() >= 0) {
+            page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         }
         List<Repository> list = repositoryMapper.getRepositoryList(params);
         if (page!=null){

@@ -141,9 +141,9 @@ public class StorageServiceImpl implements StorageService {
                 break;
         }
         Page<Object> page = null;
-        if (pagination.getOffset() >= 0 && pagination.getLimit() >= 0) {
+        if (pagination.getOffset() >= 0 && pagination.getLimit() > 0) {
 
-            page = PageHelper.startPage(pagination.getOffset(), pagination.getLimit(), true);
+            page = PageHelper.startPage(pagination.getPageNum(), pagination.getLimit(), true);
         }
         List<StorageDto> list = storageMapper.getStorageList(params);
         if (page!=null){

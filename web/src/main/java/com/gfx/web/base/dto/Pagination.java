@@ -22,6 +22,8 @@ public class Pagination implements Serializable {
     private Date startDate;
     /**结束时间*/
     private Date endDate;
+    /**页码*/
+    private int pageNum;
 
     public int getLimit() {
         return limit;
@@ -69,5 +71,11 @@ public class Pagination implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public int getPageNum() {
+        //页码的开始页是第1页
+        pageNum = offset/limit+1;
+        return pageNum;
     }
 }
