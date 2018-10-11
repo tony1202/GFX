@@ -82,9 +82,9 @@ function handleAjaxError(responseStatus){
 		append = '对不起，您未授权执行此操作，请重新登陆';
 		showMsg(type, msg, append);
 		// 刷新重新登陆
-		delay(function(){
-			window.location.reload(true);
-		}, 5000);
+		// delay(function(){
+		// 	window.location.reload(true);
+		// }, 5000);
 	} else if (responseStatus == 404) {
 		msg = '不存在的操作';
 		showMsg(type, msg, append);
@@ -100,10 +100,20 @@ function handleAjaxError(responseStatus){
 		msg = '服务器错误';
 		append = '对不起，服务器发生了错误，我们将尽快解决，请稍候重试';
 		showMsg(type, msg, append);
-	} else {
-		msg = '遇到未知的错误';
-		showMsg(type, msg, append);
-	};
+	}  else if (responseStatus === 200) {
+        msg = '用登录超时';
+        append = '对不起，您登录超时,请重新登录';
+        showMsg(type, msg, append);
+        // 刷新重新登陆
+        delay(function(){
+            window.location.reload(true);
+        }, 3000);
+    }
+    else {
+        msg = '网络异常';
+        append = '请检查网络是否正常';
+        showMsg(type, msg, append);
+    };
 }
 
 // 初始密码修改
